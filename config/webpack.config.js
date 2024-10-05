@@ -336,7 +336,8 @@ module.exports = function (webpackEnv) {
         ]),
       ],
       fallback: {
-        "crypto": require.resolve("crypto-browserify")
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": false
       }
     },
     module: {

@@ -1,14 +1,16 @@
 import numpy as np
+import json
 
 
 
-def signal_noise_ratio(R_star, r_planet, dia_tele, Earth_star, planet_star,SNR0 = 100):
-    SNR = SNR0*((R_star*r_planet*(dia_tele/6))/(Earth_star/10 * planet_star))^2
+
+def signal_noise_ratio(R_star, r_planet, Earth_star, planet_star,SNR0 = 100):
+    SNR = SNR0*((R_star*r_planet) / ((6*Earth_star)/ 10 * planet_star))**2
     return SNR
+# signal_noise_ratio(13.76, 12.2,93.1846,1.178)
 
-
-def limiting_distance(dia_tele,planet_star):
-    ES_max = 15 *((dia_tele/6)/planet_star)
+def limiting_distance(planet_star):
+    ES_max = 15/(6*planet_star)
     return ES_max
 
 
@@ -46,4 +48,4 @@ def habitable_zone_lim(st_teff, st_lum):
 # Test that the function works fine (using the website's calculations)
 assert abs(habitable_zone_lim(5780, 0)[0] - 0.95) < 0.001
 
-
+print( signal_noise_ratio(13.76, 12.2,93.1846,1.178))

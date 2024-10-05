@@ -2,13 +2,6 @@ import pandas as pd
 
 df = pd.read_csv('Data_Processing/Planetary_Systems_Composition.csv', on_bad_lines='skip', comment='#')
 
-columns_to_keep = ['pl_name', 'hostname', 'sy_snum', 'sy_pnum', 'sy_mnum'
-                   'pl_orbper', 'pl_orbsmax', 'pl_rade', 'pl_radj', 'pl_bmasse',
-                   'pl_bmassj', 'pl_dens', 'pl_orbeccen', 'pl_eqt', 'pl_orbincl',
-                   'st_spectype', 'ra', 'dec', 'sy_dist', 'sy_plx']
-
-dataFrame = pd.DataFrame(df, columns=columns_to_keep)
-
 photometryData = pd.DataFrame(df, columns=['sy_bmag', 'sy_vmag', 'sy_jmag', 'sy_hmag', 
                                                   'sy_kmag', 'sy_umag', 'sy_gmag', 'sy_rmag',
                                                   'sy_imag', 'sy_zmag', 'sy_w1mag', 'sy_w2mag',

@@ -2,14 +2,7 @@ import pandas as pd
 
 df = pd.read_csv('Data_Processing/Planetary_Systems_Composition.csv', on_bad_lines='skip', comment='#')
 
-columns_to_keep = ['pl_name', 'hostname', 'sy_snum', 'sy_pnum', 'sy_mnum'
-                   'pl_orbper', 'pl_orbsmax', 'pl_rade', 'pl_radj', 'pl_bmasse',
-                   'pl_bmassj', 'pl_dens', 'pl_orbeccen', 'pl_eqt', 'pl_orbincl',
-                   'st_spectype', 'ra', 'dec', 'sy_dist', 'sy_plx']
-
-dataFrame = pd.DataFrame(df, columns=columns_to_keep)
-
-planetData = pd.DataFrame(dataFrame, columns=['pl_name', 'hostname', 'sy_snum', 'sy_pnum', 'sy_mnum',
+planetData = pd.DataFrame(df, columns=['pl_name', 'hostname', 'sy_snum', 'sy_pnum', 'sy_mnum',
                           'pl_rade', 'pl_radj', 'pl_bmasse', 'pl_bmassj', 'pl_dens', 'pl_eqt', 'st_spectype'])
 
 planetData = planetData.rename(columns={

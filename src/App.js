@@ -1,25 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import { createRoot } from 'react-dom/client'
+import { Canvas } from '@react-three/fiber'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="canvas-container">
+      <Canvas>
+      <mesh>
+        <boxGeometry args={[2, 2, 2]} />
+        <meshPhongMaterial />
+      </mesh>
+      <ambientLight intensity={0.1} />
+      <directionalLight position={[0, 0, 5]} color="red" />
+    </Canvas>
     </div>
-  );
+  )
 }
 
 export default App;

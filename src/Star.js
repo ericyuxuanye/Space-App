@@ -22,10 +22,13 @@ function starColor(starClass) {
 }
 
 export default function Star({ name, radius, starClass, habitableZone }) {
+  console.log(name, radius, starClass, habitableZone);
+  
   return (
     <mesh>
       <sphereGeometry args={[radius, 32, 32]} />
       {/* Increased emissiveIntensity for stronger glow */}
+      <pointLight color={starColor(starClass)} intensity={100} decay={1} />
       <meshStandardMaterial
         emissive={starColor(starClass)}
         emissiveIntensity={4}

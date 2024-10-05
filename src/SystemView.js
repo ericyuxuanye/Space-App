@@ -13,10 +13,14 @@ import Planet from "./Planet";
 // semimajorAxis,
 // eccentricity,
 
-export default function SystemView(star) {
+export default function SystemView({ star }) {
+  console.log("s", star);
+  console.log("p", star.planets);
+  
   return (
     <>
       <Star {...star} />
+      <ambientLight intensity={0.05} />
       {star.planets.map((planet, i) => (
         <Planet
           key={i}

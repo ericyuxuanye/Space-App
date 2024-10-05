@@ -9,16 +9,7 @@ planetData = pd.DataFrame(df, columns=['pl_name', 'hostname', 'sy_snum', 'sy_pnu
 planetData = planetData.rename(columns={
     'pl_name': 'Exoplanet Name',
     'hostname': 'Host Star Name',
-    'sy_snum': 'Number of Stars',
-    'sy_pnum': 'Number of Planets',
-    'sy_mnum': 'Number of Moons',
     'pl_rade': 'Exoplanet Radius (Earth Units)',
-    'pl_radj': 'Exoplanet Radius (Jupiter Units)',
-    'pl_bmasse': 'Exoplanet Mass (Earth Units)',
-    'pl_bmassj': 'Exoplanet Mass (Jupiter Units)',
-    'pl_dens': 'Exoplanet Density (g/cm^3)',
-    'pl_eqt': 'Equilibrium Temperature (K)',
-    'st_spectype': 'Spectral Type',
     'st_rad': 'Stellar Radius',
 })
 

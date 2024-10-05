@@ -30,7 +30,7 @@ export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
 
   return (
     <>
-      <mesh position={[xProj, yProj, 0]}>
+      <mesh position={[xProj, 0, yProj]}>
         <sphereGeometry args={[radius, 32, 32]} />
         {/* Increased emissiveIntensity for stronger glow */}
         <meshStandardMaterial color="white" />

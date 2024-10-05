@@ -19,7 +19,7 @@ export default function OrbitTrail({ theta, semiMajorAxis, eccentricity }) {
     // temporary; remove this later
     x *= 10;
     y *= 10;
-    points.push(new THREE.Vector3(x, y, 0));
+    points.push(new THREE.Vector3(x, 0, y));
   }
 
   return <Line points={points} lineWidth={1} color={"white"} />;

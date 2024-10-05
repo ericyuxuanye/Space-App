@@ -7,6 +7,7 @@ import {
 } from "@react-three/postprocessing";
 import Star from "./Star";
 import Planet from "./Planet";
+import { Environment } from "@react-three/drei";
 
 // name,
 // radius,
@@ -19,6 +20,10 @@ export default function SystemView({ star }) {
   
   return (
     <>
+      <Environment
+        background
+        files="StudioHDR_2_StarField_01_4K.hdr"
+      />
       <Star {...star} />
       <ambientLight intensity={0.05} />
       {star.planets.map((planet, i) => (

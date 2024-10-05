@@ -65,7 +65,7 @@ for index, row in df.iterrows():
     
     if star_name not in grouped_by_star:
         grouped_by_star[star_name] = {
-            # "Host Star Name": star_name,
+            "Host Star Name": star_name,
             "Spectral Type": row['Spectral Type'],
             "Stellar Radius": row['Stellar Radius'],
             "Inclination": row['Inclination'],

@@ -1,8 +1,5 @@
 import numpy as np
 
-
-
-
 def signal_noise_ratio(R_star, r_planet, Earth_star, planet_star,SNR0 = 100):
     SNR = SNR0*((R_star*r_planet) / ((6*Earth_star)/ 10 * planet_star))**2
     return SNR
@@ -40,11 +37,19 @@ def habitable_zone_lim(st_teff, st_lum):
     st_lum = 10 ** st_lum
     # st_lum = np.e ** st_lum
     cons_range = np.sqrt(st_lum / cons_range)
-
     return np.array([cons_range]).ravel()
 
-
 # Test that the function works fine (using the website's calculations)
-assert abs(habitable_zone_lim(5780, 0)[0] - 0.95) < 0.001
+# print("Test")
+# assert abs(habitable_zone_lim(5780, 0)[0] - 0.95) < 0.001
 
-print( signal_noise_ratio(13.76, 12.2,93.1846,1.178))
+# print( signal_noise_ratio(13.76, 12.2,93.1846,1.178))
+
+def habitable(val, lower, upper):
+
+    if np.isnan(val) or np.isnan(lower) or np.isnan(upper):
+        return False
+    
+    if val in range(int(lower), int(upper)):
+        return True
+    return False

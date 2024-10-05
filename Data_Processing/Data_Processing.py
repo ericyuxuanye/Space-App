@@ -17,10 +17,12 @@ for col in df.columns:
 columns_to_keep = ['pl_name', 'hostname', 'sy_snum', 'sy_pnum', 'sy_mnum'
                    'pl_orbper', 'pl_orbsmax', 'pl_rade', 'pl_radj', 'pl_bmasse',
                    'pl_bmassj', 'pl_dens', 'pl_orbeccen', 'pl_eqt', 'pl_orbincl',
-                   'st_spectype', 'rastr', 'ra', 'decstr', 'dec', 'sy_dist', 'sy_plx']
+                   'st_spectype', 'ra', 'dec', 'sy_dist', 'sy_plx']
 df_cleaned = [columns_to_keep]
 
 dataFrame = pd.DataFrame(df, columns=columns_to_keep)
+
+
 
 print(dataFrame)
 

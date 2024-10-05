@@ -1,0 +1,59 @@
+{
+    "Sun": {
+        "name": "Sun",
+        "radius": 1,
+        "starClass": "G",
+        "distance": 0,
+        "habitableZone": [0.95, 1.37],
+        "planets": [
+            {
+                "name": "Mercury",
+                "radius": 0.38,
+                "semiMajorAxis": 0.39,
+                "eccentricity": 0.206
+            },
+            {
+                "name": "Venus",
+                "radius": 0.95,
+                "semiMajorAxis": 0.72,
+                "eccentricity": 0.007
+            },
+            {
+                "name": "Earth",
+                "radius": 1,
+                "semiMajorAxis": 1,
+                "eccentricity": 0.017
+            },
+            {
+                "name": "Mars",
+                "radius": 0.53,
+                "semiMajorAxis": 1.52,
+                "eccentricity": 0.093
+            },
+            {
+                "name": "Jupiter",
+                "radius": 11.2,
+                "semiMajorAxis": 5.2,
+                "eccentricity": 0.049
+            },
+            {
+                "name": "Saturn",
+                "radius": 9.45,
+                "semiMajorAxis": 9.58,
+                "eccentricity": 0.056
+            },
+            {
+                "name": "Uranus",
+                "radius": 4,
+                "semiMajorAxis": 19.22,
+                "eccentricity": 0.046
+            },
+            {
+                "name": "Neptune",
+                "radius": 3.88,
+                "semiMajorAxis": 30.05,
+                "eccentricity": 0.010
+            }
+        ]
+    }
+}

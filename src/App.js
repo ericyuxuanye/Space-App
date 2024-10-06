@@ -10,6 +10,7 @@ import "./sidenav.css";
 import EarthView from "./EarthView";
 import EarthView2 from "./EarthView2";
 import EarthOrbitView from "./EarthOrbitView";
+import SystemList from "./SystemList";
 
 function transformPlanetData(planetName, planetData) {
   return {
@@ -17,6 +18,7 @@ function transformPlanetData(planetName, planetData) {
     radius: planetData["Exoplanet Radius"],
     semiMajorAxis: planetData["Orbital Semi-Major Axis"],
     eccentricity: planetData["Eccentricity"],
+    snr: planetData["SNR"],
   };
 }
 
@@ -46,44 +48,41 @@ for (let starName of Object.keys(data)) {
   transformedData[starName] = transformStarData(data[starName]);
 }
 
-const fakeStarData = {
-  star1: {
-    starClass: "G",
-    ra: 0.5,
-    dec: 0.5,
-    distSun: 5,
-    planets: [{}],
-  },
-  star2: {
-    starClass: "G",
-    ra: 1,
-    dec: 0.5,
-    distSun: 3,
-    planets: [{}],
-  },
-  star3: {
-    starClass: "K",
-    ra: 1,
-    dec: 2,
-    distSun: 6,
-    planets: [{}],
-  },
-};
-
 export default function App() {
+  const [systemName, setSystemName] = useState("");
+
   return (
     <div>
-      {/* <MySideNav classname="sidenav"></MySideNav> */}
-      <Canvas
-        style={{ background: "black", width: "100vw", height: "100vh" }}
-        // frameloop="demand"
-      >
-        {/* <SystemView star={transformedData["24 Sex"]} /> */}
-        <EarthOrbitView
-          stars={fakeStarData}
-          isPlanetObservableFunc={() => true}
+      {systemName === "" ? (
+        <SystemList
+          stars={transformedData}
+          getSystemScore={(starData) => {
+            let maxSNR = -1;
+            for (let planetName of Object.keys(starData.planets)) {
+              if (starData.planets[planetName].snr > maxSNR) {
+                maxSNR = starData.planets[planetName].snr;
+              }
+            }
+            return maxSNR;
+          }}
+          systemScoreName={"signal-noise ratio"}
+          setSystemName={setSystemName}
         />
-      </Canvas>
+      ) : (
+        <Canvas
+          style={{
+            background: "black",
+            width: "100vw",
+            height: "100vh",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+          frameloop="demand"
+        >
+          <SystemView star={transformedData["24 Sex"]} />
+        </Canvas>
+      )}
     </div>
   );
 }

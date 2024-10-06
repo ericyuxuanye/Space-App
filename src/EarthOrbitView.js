@@ -1,14 +1,25 @@
-import React, {useRef, useEffect, Suspense, useLayoutEffect, useMemo} from "react";
+import React, {
+  useRef,
+  useEffect,
+  Suspense,
+  useLayoutEffect,
+  useMemo,
+} from "react";
 import SimpleStar from "./SimpleStar";
 import {
   Bloom,
   EffectComposer,
   ToneMapping,
 } from "@react-three/postprocessing";
-import { OrbitControls, PerspectiveCamera, PointerLockControls } from "@react-three/drei";
-import { useFrame, useThree } from '@react-three/fiber';
+import {
+  Html,
+  OrbitControls,
+  PerspectiveCamera,
+  PointerLockControls,
+} from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import { SphereGeometry } from "three";
-import * as THREE from 'three';
+import * as THREE from "three";
 import { convertRADecToXYZ } from "./SimpleStar";
 import { starColor } from "./util";
 
@@ -24,7 +35,7 @@ function hasObservablePlanet(star, isPlanetObservableFunc) {
 const CameraControls = () => {
   // const controlsRef = useRef();
   // const cameraRef = useRef();
-  
+
   // // Custom camera update function
   // const updateCameraOrbit = () => {
   //   const forward = new THREE.Vector3();
@@ -33,7 +44,7 @@ const CameraControls = () => {
   // };
 
   // useEffect(() => {
-    
+
   //   const controls = controlsRef.current;
   //   if (controls) {
   //     // controls.addEventListener('end', updateCameraOrbit);
@@ -45,7 +56,12 @@ const CameraControls = () => {
   return (
     <>
       <perspectiveCamera makeDefault fov={60} position={[0, 0, 0]} />
-      <OrbitControls target={[0, 0, 0]} minDistance={0.01} maxDistance={0.01} enablePan={false} />
+      <OrbitControls
+        target={[0, 0, 0]}
+        minDistance={0.01}
+        maxDistance={0.01}
+        enablePan={false}
+      />
     </>
   );
 };
@@ -61,11 +77,24 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
     return hasObservablePlanet(star, isPlanetObservableFunc);
   });
   const intanceMatrix = useMemo(() => new THREE.Matrix4(), []);
+  const onHover = (event) => {
+    console.log(event);
+    setStarName(goodStars[event.instanceId]["name"]);
+    setStarPosition(event.point);
+  };
+  const [starName, setStarName] = React.useState(null);
+  const [starPosition, setStarPosition] = React.useState(null);
   useEffect(() => {
     for (let i = 0; i < goodStars.length; i++) {
       const star = goodStars[i];
       const dummy = new THREE.Object3D();
-      dummy.position.set(...convertRADecToXYZ(star["Proper Motion(ra)"], star["Proper Motion(dec)"], 1000));
+      dummy.position.set(
+        ...convertRADecToXYZ(
+          star["Proper Motion(ra)"],
+          star["Proper Motion(dec)"],
+          1000
+        )
+      );
       dummy.updateMatrix();
       ref.current.setMatrixAt(i, dummy.matrix);
       ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
@@ -84,10 +113,31 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
         const starData = goodStars[starName];
         return <SimpleStar key={starName} name={starData.name} ra={starData["Proper Motion(ra)"]} dec={starData["Proper Motion(dec)"]} distSun={1000}/>;
       })} */}
-      <instancedMesh ref={ref} args={[null, null, goodStars.length]}>
+      <instancedMesh
+        ref={ref}
+        args={[null, null, goodStars.length]}
+        onPointerEnter={onHover}
+        onPointerLeave={() => setStarName(null)}
+      >
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial />
       </instancedMesh>
+      {starName && (
+        <Html position={starPosition}>
+          <div
+            style={{
+              fontSize: "20px",
+              color: "white",
+              padding: "0.5em",
+              background: "#00000030",
+              borderRadius: "0.5em",
+            }}
+          >
+            {starName}
+          </div>
+        </Html>
+      )}
+
       {/* <CameraControls /> */}
       <EffectComposer disableNormalPass>
         <Bloom

@@ -43,7 +43,7 @@ export default function Star({ name, radius, starClass, habitableZone, setTarget
             borderRadius: "0.5em",
           }}
           onClick={() => {
-            setTargetPosition([0, 0, 0]);
+            setTargetPosition([0, 0, 0], radius);
             orbitCallback(true);
           }}
         >

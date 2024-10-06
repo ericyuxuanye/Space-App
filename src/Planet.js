@@ -50,7 +50,7 @@ export default function Planet({
             onMouseOver={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => {
-              setTargetPosition([xProj, 0, yProj]);
+              setTargetPosition([xProj, 0, yProj], radius);
               orbitCallback(false);
             }}
             style={{

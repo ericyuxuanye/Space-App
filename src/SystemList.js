@@ -1,6 +1,7 @@
 import React from "react";
 import { starColor } from "./util";
 import "./SystemList.css";
+import { Center } from "@react-three/drei";
 
 export default function SystemList({
   stars,
@@ -55,6 +56,7 @@ export default function SystemList({
         zIndex: "30",
       }}
     >
+      <h2 style={{ textAlign: "center" }}>Top Habitable Systems</h2>
       {systemList.slice(0, 100).map(([score, name, color], idx) => {
         return (
           <div

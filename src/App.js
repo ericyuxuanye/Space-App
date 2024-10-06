@@ -34,6 +34,7 @@ function transformStarData(starData) {
     radius: starData["Stellar Radius"],
     starClass: (starData["Spectral Type"] ?? "G").charAt(0),
     planets: planets,
+    ...starData,
     // add more fields here
   };
 }

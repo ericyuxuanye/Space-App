@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def signal_noise_ratio(R_star, r_planet, Earth_star, planet_star,SNR0 = 100):
     SNR = SNR0*((R_star*r_planet) / ((6*Earth_star)/ 10 * planet_star))**2
     return SNR
@@ -36,9 +37,11 @@ def habitable_zone_lim(st_teff, st_lum):
     opt_range[0] = seff[0]
     opt_range[1] = seff[1]
     st_lum = 10 ** st_lum
+    print(st_lum)
     # st_lum = np.e ** st_lum
     opt_range = np.sqrt(st_lum / opt_range)
     return np.array(opt_range).tolist()
+
 
 
 
@@ -50,7 +53,7 @@ luminosity = 1.877
 def habitable(val, lower, upper):
 
     if np.isnan(val) or np.isnan(lower) or np.isnan(upper):
-        return False
+        return lower, upper
     
     if val in range(int(lower), int(upper)):
         return True

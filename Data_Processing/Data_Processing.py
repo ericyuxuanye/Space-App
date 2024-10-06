@@ -55,7 +55,7 @@ for index, row in df.iterrows():
             habitable_rows[star_name] = grouped_by_star[star_name]
 
 json_data_habitable = json.dumps(grouped_by_star, indent=4)
-json_data = open("planetarydata.json","w")
+json_data = open("./src/planetarydata.json","w")
 json_data.write(json_data_habitable)
 json_data.close
 

@@ -14,12 +14,7 @@ import { Environment } from "@react-three/drei";
 // semimajorAxis,
 // eccentricity,
 
-export default function SystemView({ star }) {
-  const [focusObject, setFocusObject] = useState(-1);
-  const handleClick = (planetIdx) => {
-    setFocusObject(planetIdx);
-    console.log(`clicked ${star.planets[planetIdx].name}`);
-  };
+export default function SystemView({ star, setTargetPosition }) {
 
   return (
     <>
@@ -29,8 +24,8 @@ export default function SystemView({ star }) {
       {star.planets.map((planet, i) => (
         <Planet
           key={i}
+          setTargetPosition={setTargetPosition}
           {...planet}
-          onClick={() => handleClick(i)}
           // radius={planet.radius}
           // semimajorAxis={planet.semimajorAxis}
           // eccentricity={planet.eccentricity}

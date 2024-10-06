@@ -24,14 +24,14 @@ export default function Planet({
   radius,
   semiMajorAxis,
   eccentricity,
-  onClick,
+  setTargetPosition
 }) {
   const [hovered, setHovered] = useState(false);
-
   const mt = MersenneTwister19937.seed(hashCode(name));
   const theta = real(0, 2 * Math.PI, false)(mt);
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
+  console.log("planet" + name, xProj, yProj);
 
   xProj *= 10;
   yProj *= 10;
@@ -44,9 +44,9 @@ export default function Planet({
         <meshStandardMaterial color="white" />
         <Html position={[0, -0.5, 0]} center>
           <div
-            onClick={onClick}
             onMouseOver={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            onClick={() => setTargetPosition([xProj, 0, yProj])}
             style={{
               fontSize: "20px",
               color: "yellow",

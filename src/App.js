@@ -11,9 +11,8 @@ export default function App() {
     <main className="app-container">
       {/* Sidebar */}
       <Sidebar>
-        <SidebarItem text="Dashboard" alert />
-        <SidebarItem text="Settings" />
-        <SidebarItem text="Profile" />
+        <SidebarItem text="Planet Name" alert />
+        <SidebarItem text="Host Name" />
       </Sidebar>
 
       {/* Canvas area */}

@@ -1,21 +1,38 @@
 /* Container for the entire app */
 .app-container {
-  display: flex;
+  position: relative;
   height: 100vh;
+  overflow: hidden; /* Ensure no overflow when the sidebar is open */
 }
 
-/* Sidebar container */
+/* Sidebar container - fixed, so it overlays the canvas */
 .sidebar {
-  width: 250px; /* Adjust based on your sidebar's expanded width */
-  transition: width 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* Expanded width */
+  height: 100vh;
+  color: white;
+  z-index: 10; /* Ensure it is on top of the canvas */
 }
 
+/* Collapsed state of the sidebar */
 .sidebar.collapsed {
-  width: 60px; /* Adjust based on your sidebar's collapsed width */
+  width: 60px; /* Collapsed width */
 }
 
-/* The canvas container takes up the remaining space */
+/* Sidebar items will slide in/out based on the expanded state */
+.sidebar-item {
+  padding: 10px 20px;
+}
+
+.sidebar.collapsed .sidebar-item {
+  opacity: 0; /* Hide items when collapsed */
+}
+
+/* The canvas container takes up the full space */
 .canvas-container {
-  flex: 1;
+  position: relative; /* Keep the canvas relative to the main container */
+  width: 100vw;
   height: 100vh;
 }

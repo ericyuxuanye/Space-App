@@ -18,7 +18,7 @@ export function starColor(starClass) {
     case "M":
       return "#f7c76c";
     default:
-      return "#ede2da";   // this is fairly generic color iirc
+      return "#ede2da"; // this is fairly generic color iirc
   }
 }
 

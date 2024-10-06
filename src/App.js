@@ -7,9 +7,10 @@ import data from "./planetarydata.json";
 
 import MySideNav from "./Menu";
 import "./sidenav.css";
-import EarthView from "./EarthView";
-import EarthView2 from "./EarthView2";
-import EarthOrbitView from "./EarthOrbitView";
+//import EarthView from "./EarthView";
+//import EarthView2 from "./EarthView2";
+//import EarthOrbitView from "./EarthOrbitView";
+import MyChart from "./MyChart";
 
 function transformPlanetData(planetName, planetData) {
   return {
@@ -71,19 +72,22 @@ const fakeStarData = {
 };
 
 export default function App() {
+  const [isDash, setDash] = useState(true);
   return (
     <div>
       {/* <MySideNav classname="sidenav"></MySideNav> */}
-      <Canvas
-        style={{ background: "black", width: "100vw", height: "100vh" }}
-        // frameloop="demand"
-      >
+      {isDash ? <MyChart data={transformedData}/> :
+          <Canvas style={{ background: "black", width: "100vw", height: "100vh" }}
+            // frameloop="demand"
+          >
+            <SystemView star={transformedData["24 Sex"]} />
+          </Canvas>
+      }
         {/* <SystemView star={transformedData["24 Sex"]} /> */}
-        <EarthOrbitView
+        {/*<EarthOrbitView
           stars={fakeStarData}
           isPlanetObservableFunc={() => true}
-        />
-      </Canvas>
+        />*/}
     </div>
   );
 }

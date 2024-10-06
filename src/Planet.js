@@ -1,6 +1,6 @@
 import { MersenneTwister19937, real } from "random-js";
 import React, { useState } from "react";
-import { orbitPos } from "./util";
+import { EARTH_RADIUS_TO_SOLAR_RADIUS, orbitPos } from "./util";
 import OrbitTrail from "./OrbitTrail";
 import { Html } from "@react-three/drei";
 import { AnimatePresence, motion } from "framer-motion";
@@ -24,7 +24,7 @@ export default function Planet({
   radius,
   semiMajorAxis,
   eccentricity,
-  setTargetPosition
+  setTargetPosition,
 }) {
   const [hovered, setHovered] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
@@ -32,13 +32,15 @@ export default function Planet({
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
 
-  xProj *= 10;
-  yProj *= 10;
+  // xProj *= 10;
+  // yProj *= 10;
 
   return (
     <>
       <mesh position={[xProj, 0, yProj]}>
-        <sphereGeometry args={[radius, 32, 32]} />
+        <sphereGeometry
+          args={[radius * EARTH_RADIUS_TO_SOLAR_RADIUS, 32, 32]}
+        />
         {/* Increased emissiveIntensity for stronger glow */}
         <meshStandardMaterial color="white" />
         <Html position={[0, -0.5, 0]} center>
@@ -75,12 +77,8 @@ export default function Planet({
                     whiteSpace: "nowrap",
                   }}
                 >
-                  <div>
-                    {`${name} has radius ${radius}x Earth's`}
-                  </div>
-                  <div>
-                    {`Click to learn more`}
-                  </div>
+                  <div>{`${name} has radius ${radius}x Earth's`}</div>
+                  <div>{`Click to learn more`}</div>
                 </motion.div>
               )}
             </AnimatePresence>

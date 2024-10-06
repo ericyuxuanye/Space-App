@@ -1,0 +1,65 @@
+/* General sidebar styling */
+.sidenav {
+    background-color: #1e1e2f; /* Dark background */
+    color: white; /* White font color */
+    width: 250px;
+    height: 100vh;
+    border-radius: 10px; /* Rounded edges */
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .sidenav .nav-item {
+    padding: 15px 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+  }
+  
+  .sidenav .nav-item:hover {
+    background-color: #2f2f4f; /* Slightly lighter on hover */
+  }
+  
+  .sidenav .nav-icon {
+    margin-right: 15px;
+  }
+  
+  .sidenav .nav-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .sidenav .toggle {
+    align-self: flex-start;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #3a3a5f; /* Button background */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .sidenav .toggle:hover {
+    background-color: #4a4a7f; /* Lighter color on hover */
+  }
+  
+  /* Transition for open and close */
+  .sidenav.collapsed {
+    width: 60px; /* Collapse the width */
+  }
+  
+  .sidenav.collapsed .nav-text {
+    display: none; /* Hide text when collapsed */
+  }
+  

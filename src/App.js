@@ -117,6 +117,27 @@ function Loader() {
   );
 }
 
+function DiameterScrollbar({ diameter, setDiameter }) {
+  const handleChange = (e) => {
+    setDiameter(Number(e.target.value));
+  };
+
+  return (
+    <div>
+      <input
+        type="range"
+        id="telescopeDiameter"
+        min={5}
+        max={15}
+        step={0.1}
+        value={diameter}
+        onChange={handleChange}
+      />
+      <div>{`Telescope diameter: ${diameter} m`}</div>
+    </div>
+  );
+}
+
 export default function App() {
   const [systemName, setSystemName] = useState("");
   const [telescopeDiam, setTelescopeDiam] = useState(6);
@@ -124,13 +145,30 @@ export default function App() {
   return (
     <div>
       {systemName === "" ? (
-        <SystemList
-          stars={transformedData}
-          getSystemScore={getStarHabitabilityScore}
-          systemScoreName={"habitability"}
-          setSystemName={setSystemName}
-          telescopeDiam={telescopeDiam}
-        />
+        <>
+          <SystemList
+            stars={transformedData}
+            getSystemScore={getStarHabitabilityScore}
+            systemScoreName={"habitability"}
+            setSystemName={setSystemName}
+            telescopeDiam={telescopeDiam}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "1.5rem",
+              width: "95vw",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <DiameterScrollbar
+              diameter={telescopeDiam}
+              setDiameter={setTelescopeDiam}
+            />
+          </div>
+        </>
       ) : (
         <>
           <Canvas

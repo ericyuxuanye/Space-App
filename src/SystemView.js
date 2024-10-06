@@ -74,6 +74,7 @@ export default function SystemView({ star }) {
       invalidate();
     }
   });
+  console.log(star);
   return (
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />
@@ -97,7 +98,7 @@ export default function SystemView({ star }) {
       ))}
       {/* Habitable zone */}
       <mesh rotation-x={Math.PI / 2}>
-        <ringGeometry args={[0.95 * AU_TO_SOLAR_RADIUS, 1.37 * AU_TO_SOLAR_RADIUS, 128]} />
+        <ringGeometry args={[star["Habitable-Zone-upper"] * AU_TO_SOLAR_RADIUS, star["Habitable-Zone-lower"] * AU_TO_SOLAR_RADIUS, 128]} />
         <meshBasicMaterial color="#86fead" side={THREE.DoubleSide} transparent opacity={0.1} />
       </mesh>
       <EffectComposer disableNormalPass>

@@ -23,8 +23,6 @@ function starColor(starClass) {
 }
 
 export default function Star({ name, radius, starClass, habitableZone }) {
-  console.log(name, radius, starClass, habitableZone);
-
   return (
     <mesh>
       <sphereGeometry args={[radius, 32, 32]} />

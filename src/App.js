@@ -11,7 +11,6 @@ import data from "./data.json";
 import * as THREE from 'three';
 
 export default function App() {
-  console.log(data.Sun);
   return (
     <Canvas
       style={{ background: "black", width: "100vw", height: "100vh" }}

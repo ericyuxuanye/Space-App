@@ -1,8 +1,9 @@
 import { MersenneTwister19937, real } from "random-js";
-import React from "react";
+import React, { useState } from "react";
 import { orbitPos } from "./util";
 import OrbitTrail from "./OrbitTrail";
 import { Html } from "@react-three/drei";
+import { AnimatePresence, motion } from "framer-motion";
 
 const hashCode = function (s) {
   var hash = 0,
@@ -18,10 +19,17 @@ const hashCode = function (s) {
 };
 
 // assume semimajor axis is same unit as radius
-export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
+export default function Planet({
+  name,
+  radius,
+  semiMajorAxis,
+  eccentricity,
+  onClick,
+}) {
+  const [hovered, setHovered] = useState(false);
+
   const mt = MersenneTwister19937.seed(hashCode(name));
   const theta = real(0, 2 * Math.PI, false)(mt);
-  console.log(theta);
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
 
@@ -36,16 +44,42 @@ export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
         <meshStandardMaterial color="white" />
         <Html position={[0, -0.5, 0]} center>
           <div
-            onClick={() => console.log(name + " clicked")}
+            onClick={onClick}
+            onMouseOver={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
             style={{
               fontSize: "20px",
               color: "yellow",
               padding: "0.5em",
               background: "#00000030",
               borderRadius: "0.5em",
+              position: "relative",
             }}
           >
             {name}
+            <AnimatePresence>
+              {hovered && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    position: "absolute",
+                    top: "-30px", // Adjust the position of the tooltip
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    backgroundColor: "black",
+                    color: "white",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {`${name} has radius ${radius}x Earth's`}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </Html>
       </mesh>

@@ -15,23 +15,22 @@ import { Environment } from "@react-three/drei";
 // eccentricity,
 
 export default function SystemView({ star }) {
-  console.log("s", star);
-  console.log("p", star.planets);
+  const [focusObject, setFocusObject] = useState(-1);
+  const handleClick = (planetIdx) => {
+    setFocusObject(planetIdx);
+    console.log(`clicked ${star.planets[planetIdx].name}`);
+  };
 
-  const focusObject = useState(-1);
-  
   return (
     <>
-      <Environment
-        background
-        files="StudioHDR_2_StarField_01_4K.hdr"
-      />
+      <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />
       <Star {...star} />
       <ambientLight intensity={0.05} />
       {star.planets.map((planet, i) => (
         <Planet
           key={i}
           {...planet}
+          onClick={() => handleClick(i)}
           // radius={planet.radius}
           // semimajorAxis={planet.semimajorAxis}
           // eccentricity={planet.eccentricity}

@@ -66,7 +66,7 @@ const CameraControls = () => {
   );
 };
 
-export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
+export default function EarthOrbitView({ stars, isPlanetObservableFunc, setSystemName }) {
   const ref = useRef();
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
   // const ref = useLayoutEffect((imesh) => {
@@ -108,7 +108,7 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
   // console.log(starLocs);
   return (
     <>
-      <ambientLight intensity={100} />
+      <ambientLight intensity={60} />
       {/* {Object.keys(goodStars).map((starName, idx) => {
         const starData = goodStars[starName];
         return <SimpleStar key={starName} name={starData.name} ra={starData["Proper Motion(ra)"]} dec={starData["Proper Motion(dec)"]} distSun={1000}/>;
@@ -117,13 +117,14 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
         ref={ref}
         args={[null, null, goodStars.length]}
         onPointerEnter={onHover}
-        onPointerLeave={() => setStarName(null)}
+        // onPointerLeave={() => setStarName(null)}
+        // onClick={(e) => setSystemName(goodStars[e.instanceId].name)}
       >
-        <sphereGeometry args={[1, 32, 32]} />
+        <sphereGeometry args={[2, 32, 32]} />
         <meshStandardMaterial />
       </instancedMesh>
       {starName && (
-        <Html position={starPosition}>
+        <Html position={starPosition} onClick={setSystemName(starName)}>
           <div
             style={{
               fontSize: "20px",

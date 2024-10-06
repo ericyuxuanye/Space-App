@@ -134,7 +134,7 @@ export default function App() {
           telescopeDiam={telescopeDiam}
         />
         <Canvas style={{background: "black", width: "100vw", height: "100vh", zIndex: 0, top: 0, left: 0}}>
-          <EarthOrbitView stars={transformedData} isPlanetObservableFunc={() => true}/>
+          <EarthOrbitView stars={transformedData} isPlanetObservableFunc={() => true} setSystemName={setSystemName}/>
         </Canvas>
         </>
       ) : (

@@ -1,3 +1,4 @@
+import { Html } from "@react-three/drei";
 import React from "react";
 
 function starColor(starClass) {
@@ -23,7 +24,7 @@ function starColor(starClass) {
 
 export default function Star({ name, radius, starClass, habitableZone }) {
   console.log(name, radius, starClass, habitableZone);
-  
+
   return (
     <mesh>
       <sphereGeometry args={[radius, 32, 32]} />
@@ -34,6 +35,19 @@ export default function Star({ name, radius, starClass, habitableZone }) {
         emissiveIntensity={4}
         color="black"
       />
+      <Html position={[0, -0.5, 0]} center>
+        <div
+          style={{
+            fontSize: "20px",
+            color: starColor(starClass),
+            padding: "0.5em",
+            background: "#00000030",
+            borderRadius: "0.5em",
+          }}
+        >
+          {name}
+        </div>
+      </Html>
     </mesh>
   );
 }

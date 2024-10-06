@@ -18,7 +18,7 @@ export default function App() {
       camera={{ fov: 50, position: [0, Math.cos(Math.PI / 4) * 100, Math.sin(Math.PI/4) * 100] }}
     >
       <SystemView star={data.Sun} />
-      <OrbitControls />
+      <OrbitControls enablePan={false} />
     </Canvas>
   );
 }

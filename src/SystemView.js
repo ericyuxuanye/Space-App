@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Bloom,
@@ -17,6 +17,8 @@ import { Environment } from "@react-three/drei";
 export default function SystemView({ star }) {
   console.log("s", star);
   console.log("p", star.planets);
+
+  const focusObject = useState(-1);
   
   return (
     <>

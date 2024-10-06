@@ -2,6 +2,7 @@ import { MersenneTwister19937, real } from "random-js";
 import React from "react";
 import { orbitPos } from "./util";
 import OrbitTrail from "./OrbitTrail";
+import { Html } from "@react-three/drei";
 
 const hashCode = function (s) {
   var hash = 0,
@@ -34,6 +35,19 @@ export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
         <sphereGeometry args={[radius, 32, 32]} />
         {/* Increased emissiveIntensity for stronger glow */}
         <meshStandardMaterial color="white" />
+        <Html position={[0, -0.5, 0]} center>
+          <div
+            style={{
+              fontSize: "20px",
+              color: "yellow",
+              padding: "0.5em",
+              background: "#00000030",
+              borderRadius: "0.5em",
+            }}
+          >
+            {name}
+          </div>
+        </Html>
       </mesh>
       <OrbitTrail
         theta={theta}

@@ -7,8 +7,8 @@ import data from "./planetarydata.json";
 
 import MySideNav from "./Menu";
 import "./sidenav.css";
-import EarthView from "./EarthView";
-import EarthView2 from "./EarthView2";
+// import EarthView from "./EarthView";
+// import EarthView2 from "./EarthView2";
 import EarthOrbitView from "./EarthOrbitView";
 
 function transformPlanetData(planetName, planetData) {

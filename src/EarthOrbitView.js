@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useRef, useEffect, Suspense} from "react";
 import SimpleStar from "./SimpleStar";
 import {
   Bloom,
   EffectComposer,
   ToneMapping,
 } from "@react-three/postprocessing";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, PointerLockControls } from "@react-three/drei";
+import { useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 
 function hasObservablePlanet(star, isPlanetObservableFunc) {
   for (const planetData of Object.values(star.planets)) {
@@ -15,6 +17,35 @@ function hasObservablePlanet(star, isPlanetObservableFunc) {
   }
   return false;
 }
+
+const CameraControls = () => {
+  const controlsRef = useRef();
+  // const cameraRef = useRef();
+  
+  // // Custom camera update function
+  // const updateCameraOrbit = () => {
+  //   const forward = new THREE.Vector3();
+  //   cameraRef.current.getWorldDirection(forward);
+  //   controlsRef.current.target.copy(cameraRef.current.position).add(forward);
+  // };
+
+  // useEffect(() => {
+    
+  //   const controls = controlsRef.current;
+  //   if (controls) {
+  //     // controls.addEventListener('end', updateCameraOrbit);
+  //     // return () => controls.removeEventListener('end', updateCameraOrbit);
+  //     console.log(controls)
+  //     controls.current.rotateSpeed=-0.5;
+  //   }
+  // }, []);
+  return (
+    <>
+      <perspectiveCamera makeDefault fov={60} position={[0, 0, 0]} />
+      <OrbitControls ref={controlsRef} target={[0, 0, 0]} minDistance={0.01} maxDistance={0.01} enablePan={false} />
+    </>
+  );
+};
 
 export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
   const goodStars = Object.values(stars).filter((star) => {
@@ -29,6 +60,7 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
         const starData = goodStars[starName];
         return <SimpleStar key={idx} name={starName} {...starData} />;
       })}
+      {/* <CameraControls /> */}
       <EffectComposer disableNormalPass>
         <Bloom
           mipmapBlur
@@ -38,16 +70,7 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
         />
         <ToneMapping />
       </EffectComposer>
-
-      {/* restrict zoom */}
-      <OrbitControls enablePan={false} target={[0, 0, 0]} />
-      <PerspectiveCamera
-        makeDefault
-        position={[0, 0, 50]}
-        fov={50}
-        far={1e3}
-        near={1e-5}
-      />
+      <CameraControls />
     </>
   );
 }

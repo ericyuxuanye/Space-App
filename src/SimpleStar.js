@@ -1,5 +1,6 @@
 import React from "react";
 import { starColor } from "./util";
+import { Html } from "@react-three/drei";
 
 function convertRADecToXYZ(ra, dec, distSun) {
   const radRA = (ra / 24) * 2 * Math.PI; // Convert hours to radians
@@ -13,7 +14,7 @@ function convertRADecToXYZ(ra, dec, distSun) {
 export default function SimpleStar({ name, starClass, ra, dec, distSun }) {
   return (
     <mesh position={convertRADecToXYZ(ra, dec, distSun)}>
-      <sphereGeometry args={[0.5, 32, 32]} />
+      <sphereGeometry args={[0.1, 32, 32]} />
       {/* Increased emissiveIntensity for stronger glow */}
       <pointLight color={starColor(starClass)} intensity={1} decay={0} />
       <meshStandardMaterial
@@ -21,7 +22,7 @@ export default function SimpleStar({ name, starClass, ra, dec, distSun }) {
         emissiveIntensity={2}
         color="black"
       />
-      {/* <Html position={[0, -0.5, 0]} center>
+      <Html position={[0, -0.5, 0]} center>
         <div
           style={{
             fontSize: "20px",
@@ -35,7 +36,7 @@ export default function SimpleStar({ name, starClass, ra, dec, distSun }) {
         >
           {name}
         </div>
-      </Html> */}
+      </Html>
     </mesh>
   );
 }

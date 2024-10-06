@@ -40,13 +40,18 @@ export default function SystemView({ star }) {
   const [position, setPosition] = useState(initialPosition);
   const [futurePosition, setFuturePosition] = useState(initialPosition);
   const [target, setTarget] = useState([0, 0, 0]); // Default camera position
-  const updateTarget = (t, radius) => {
+  const updateTargetPlanet = (t, radius) => {
     setTarget(t);
     setFuturePosition([
       t[0],
       t[1] + (Math.cos(Math.PI / 4) * radius) / 10,
       t[2] + (Math.sin(Math.PI / 4) * radius) / 10,
     ]);
+    invalidate();
+  };
+  const updateTargetStar = () => {
+    setTarget([0, 0, 0]);
+    setFuturePosition(initialPosition);
     invalidate();
   };
   useFrame(() => {
@@ -68,7 +73,7 @@ export default function SystemView({ star }) {
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />
       <Star
-        setTargetPosition={updateTarget}
+        setTargetPosition={updateTargetStar}
         orbitCallback={setOrbit}
         {...star}
       />
@@ -76,7 +81,7 @@ export default function SystemView({ star }) {
       {star.planets.map((planet, i) => (
         <Planet
           key={i}
-          setTargetPosition={updateTarget}
+          setTargetPosition={updateTargetPlanet}
           showOrbit={orbit}
           orbitCallback={setOrbit}
           {...planet}

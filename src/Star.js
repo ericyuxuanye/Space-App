@@ -18,7 +18,7 @@ function starColor(starClass) {
     case "M":
       return "#f7c76c";
     default:
-      throw Error("fuck you not valid");
+      return "#ede2da";   // this is fairly generic color iirc
   }
 }
 
@@ -43,7 +43,7 @@ export default function Star({ name, radius, starClass, habitableZone, setTarget
             borderRadius: "0.5em",
           }}
           onClick={() => {
-            setTargetPosition([0, 0, 0], radius);
+            setTargetPosition();
             orbitCallback(true);
           }}
         >

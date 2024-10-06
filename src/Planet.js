@@ -35,6 +35,7 @@ export default function Planet({
   returnToSystemView,
 }) {
   const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
   const theta = real(0, 2 * Math.PI, false)(mt);
   const url = encodeURI(`https://exoplanetarchive.ipac.caltech.edu/overview/${name}`);
@@ -46,6 +47,9 @@ export default function Planet({
   // yProj *= 10;
   const isObservable =
     snr * Math.pow(telescopeDiam, 2) > 5 && telescopeDiam > minSeparationDiam;
+
+  const planetLink = 
+  `https://exoplanetarchive.ipac.caltech.edu/overview/${encodeURIComponent(name)}#planet_${name.replace(/\s+/g, "-")}_collapsible`;
 
   return (
     <>
@@ -67,6 +71,7 @@ export default function Planet({
               } else {
                 setTargetPosition([xProj, 0, yProj], radius);
                 orbitCallback(false);
+                setClicked(true); 
               }
             }}
             style={{
@@ -76,9 +81,31 @@ export default function Planet({
               borderRadius: "0.5em",
               padding: "0.5rem",
               position: "relative",
+              width: "250px",
             }}
           >
             {showOrbit ? name : <a style={{color: isObservable ? "#4ffbff" : "#ff8d8d"}} href={url} target="_blank" rel="noreferrer">{name}</a>}
+            {/* {name} */}
+            <a
+              href={planetLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: isObservable ? "#70ff8c" : "#ff8d8d",
+                textDecoration: "none",
+              }}
+            >
+              {name}
+            </a>
+
+            {clicked && isPlanetView && (
+              <div style={{ marginTop: "0.5rem", fontSize: "16px" }}>
+                <div>{`Radius: ${Math.round(radius * 1000) / 1000} Earth radii`}</div>
+                <div>{`Semi-Major Axis: ${Math.round(semiMajorAxis * 1000) / 1000} AU`}</div>
+                <div>{`Eccentricity: ${Math.round(eccentricity * 1000) / 1000}`}</div>
+              </div>
+            )}
+            
             <AnimatePresence>
               {hovered && (
                 <motion.div
@@ -89,6 +116,7 @@ export default function Planet({
                   style={{
                     position: "absolute",
                     top: "4em",
+                    //top: "-50px",
                     left: "50%",
                     transform: "translateX(-50%)",
                     backgroundColor: "black",
@@ -97,6 +125,12 @@ export default function Planet({
                     borderRadius: "5px",
                     whiteSpace: "nowrap",
                     zIndex: 100,
+                  }}
+                  onClick={() => {
+                    if (isPlanetView) {
+                      returnToSystemView();
+                      orbitCallback(true);
+                    }
                   }}
                 >
                   {isPlanetView ? (

@@ -37,6 +37,8 @@ export default function Planet({
   const [hovered, setHovered] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
   const theta = real(0, 2 * Math.PI, false)(mt);
+  const url = encodeURI(`https://exoplanetarchive.ipac.caltech.edu/overview/${name}`);
+  console.log(url);
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
 
@@ -53,6 +55,7 @@ export default function Planet({
         />
         {/* Increased emissiveIntensity for stronger glow */}
         <meshStandardMaterial color="white" />
+        
         <Html position={[0, 0, 0]} center>
           <div
             onMouseOver={() => setHovered(true)}
@@ -68,14 +71,14 @@ export default function Planet({
             }}
             style={{
               fontSize: "20px",
-              color: isObservable ? "#70ff8c" : "#ff8d8d",
+              color: isObservable ? "#4ffbff" : "#ff8d8d",
               background: "#00000030",
               borderRadius: "0.5em",
               padding: "0.5rem",
               position: "relative",
             }}
           >
-            {name}
+            {showOrbit ? name : <a style={{color: isObservable ? "#4ffbff" : "#ff8d8d"}} href={url} target="_blank" rel="noreferrer">{name}</a>}
             <AnimatePresence>
               {hovered && (
                 <motion.div
@@ -85,7 +88,7 @@ export default function Planet({
                   transition={{ duration: 0.3 }}
                   style={{
                     position: "absolute",
-                    top: "30px",
+                    top: "4em",
                     left: "50%",
                     transform: "translateX(-50%)",
                     backgroundColor: "black",

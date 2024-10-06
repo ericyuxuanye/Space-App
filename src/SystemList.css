@@ -1,0 +1,9 @@
+.underline-hover {
+  text-decoration: none; /* No underline initially */
+  cursor: default; /* Default cursor */
+}
+
+.underline-hover:hover {
+  text-decoration: underline; /* Underline on hover */
+  cursor: pointer; /* Pointer cursor on hover */
+}

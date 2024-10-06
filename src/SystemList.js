@@ -1,7 +1,13 @@
 import React from "react";
 import { starColor } from "./util";
+import "./SystemList.css";
 
-export default function SystemList({ stars, getSystemScore, systemScoreName, setSystemName }) {
+export default function SystemList({
+  stars,
+  getSystemScore,
+  systemScoreName,
+  setSystemName,
+}) {
   // sort in descending order
   const systemList = [];
   for (let starName of Object.keys(stars)) {
@@ -39,18 +45,19 @@ export default function SystemList({ stars, getSystemScore, systemScoreName, set
             }}
             key={idx}
           >
-            <div
-              style={{ fontWeight: 500, fontSize: "2rem", color: color }}
-            >
+            <div style={{ fontWeight: 500, fontSize: "2rem", color: color }}>
               {name}
             </div>
             <div style={{ marginTop: "0.25em" }}>
               Top planet has {systemScoreName}{" "}
               <span>{Math.round(100 * score) / 100}</span>
             </div>
-            <div style={{ marginTop: "0.25em" }}>
-              Click {<span onClick={() => setSystemName(name)}>here</span>} to learn more about this
-              system!
+            <div
+              style={{ marginTop: "0.25em", fontWeight: 500 }}
+              className={"underline-hover"}
+              onClick={() => setSystemName(name)}
+            >
+              Learn more about this system!
             </div>
           </div>
         );

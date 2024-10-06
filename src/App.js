@@ -1,6 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Sphere } from "@react-three/drei";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  Sphere,
+  useProgress,
+  Html,
+} from "@react-three/drei";
 import SystemView from "./SystemView";
 import mockdata from "./data.json";
 import data from "./planetarydata.json";
@@ -11,22 +17,42 @@ import EarthView from "./EarthView";
 import EarthView2 from "./EarthView2";
 import EarthOrbitView from "./EarthOrbitView";
 import SystemList from "./SystemList";
+import { NodePath } from "@babel/core";
 
-function transformPlanetData(planetName, planetData) {
+function transformPlanetData(
+  planetName,
+  planetData,
+  habitableMin,
+  habitableMax
+) {
   return {
     name: planetName,
     radius: planetData["Exoplanet Radius"],
     semiMajorAxis: planetData["Orbital Semi-Major Axis"],
     eccentricity: planetData["Eccentricity"],
     snr: planetData["SNR"],
+    habitability: Math.exp(
+      -Math.pow(
+        (planetData["Orbital Semi-Major Axis"] -
+          (habitableMin + habitableMax) / 2) /
+          (habitableMax - habitableMin),
+        2
+      )
+    ),
   };
 }
 
 function transformStarData(starData) {
   const planets = [];
   for (let planetName of Object.keys(starData["Planets"])) {
+    const planetData = starData["Planets"][planetName];
     planets.push(
-      transformPlanetData(planetName, starData["Planets"][planetName])
+      transformPlanetData(
+        planetName,
+        planetData,
+        starData["Habitable-Zone-lower"],
+        starData["Habitable-Zone-upper"]
+      )
     );
   }
   // if (starData["Host Star Name"] == "11 Com") {
@@ -48,6 +74,41 @@ for (let starName of Object.keys(data)) {
   transformedData[starName] = transformStarData(data[starName]);
 }
 
+function getStarSNRScore(starData) {
+  let maxSNR = -1;
+  for (let planetName of Object.keys(starData.planets)) {
+    if (starData.planets[planetName].snr > maxSNR) {
+      maxSNR = starData.planets[planetName].snr;
+    }
+  }
+  return maxSNR;
+}
+
+function getStarHabitabilityScore(starData) {
+  let maxHab = -1;
+  for (let planetName of Object.keys(starData.planets)) {
+    if (starData.planets[planetName].snr > maxHab) {
+      maxHab = starData.planets[planetName].habitability;
+    }
+  }
+  return maxHab;
+}
+
+function Loader() {
+  const { progress } = useProgress();
+  const { invalidate, gl } = useThree();
+
+  useFrame(() => {
+    invalidate();
+  });
+
+  return (
+    <Html center>
+      <div style={{ color: "white" }}>Loading... {Math.floor(progress)}%</div>
+    </Html>
+  );
+}
+
 export default function App() {
   const [systemName, setSystemName] = useState("");
 
@@ -56,16 +117,8 @@ export default function App() {
       {systemName === "" ? (
         <SystemList
           stars={transformedData}
-          getSystemScore={(starData) => {
-            let maxSNR = -1;
-            for (let planetName of Object.keys(starData.planets)) {
-              if (starData.planets[planetName].snr > maxSNR) {
-                maxSNR = starData.planets[planetName].snr;
-              }
-            }
-            return maxSNR;
-          }}
-          systemScoreName={"signal-noise ratio"}
+          getSystemScore={getStarHabitabilityScore}
+          systemScoreName={"habitability"}
           setSystemName={setSystemName}
         />
       ) : (
@@ -80,7 +133,9 @@ export default function App() {
           }}
           frameloop="demand"
         >
-          <SystemView star={transformedData["24 Sex"]} />
+          <Suspense fallback={<Loader />}>
+            <SystemView star={transformedData[systemName]} />
+          </Suspense>
         </Canvas>
       )}
     </div>

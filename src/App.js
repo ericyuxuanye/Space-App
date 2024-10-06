@@ -7,6 +7,9 @@ import data from "./planetarydata.json";
 
 import MySideNav from "./Menu";
 import "./sidenav.css";
+import EarthView from "./EarthView";
+import EarthView2 from "./EarthView2";
+import EarthOrbitView from "./EarthOrbitView";
 
 function transformPlanetData(planetName, planetData) {
   return {
@@ -27,7 +30,6 @@ function transformStarData(starData) {
   // if (starData["Host Star Name"] == "11 Com") {
   //   console.log(starData["Spectral Type"]);
   // }
-  
 
   return {
     name: starData["Host Star Name"],
@@ -43,16 +45,44 @@ for (let starName of Object.keys(data)) {
   transformedData[starName] = transformStarData(data[starName]);
 }
 
+const fakeStarData = {
+  star1: {
+    starClass: "G",
+    ra: 0.5,
+    dec: 0.5,
+    distSun: 5,
+    planets: [{}],
+  },
+  star2: {
+    starClass: "G",
+    ra: 1,
+    dec: 0.5,
+    distSun: 3,
+    planets: [{}],
+  },
+  star3: {
+    starClass: "K",
+    ra: 1,
+    dec: 2,
+    distSun: 6,
+    planets: [{}],
+  },
+};
+
 export default function App() {
   return (
     <div>
       {/* <MySideNav classname="sidenav"></MySideNav> */}
-    <Canvas
-      style={{ background: "black", width: "100vw", height: "100vh" }}
-      frameloop="demand"
-    >
-      <SystemView star={transformedData["24 Sex"]} />
-    </Canvas>
+      <Canvas
+        style={{ background: "black", width: "100vw", height: "100vh" }}
+        // frameloop="demand"
+      >
+        {/* <SystemView star={transformedData["24 Sex"]} /> */}
+        <EarthOrbitView
+          stars={fakeStarData}
+          isPlanetObservableFunc={() => true}
+        />
+      </Canvas>
     </div>
   );
 }

@@ -1,27 +1,6 @@
 import { Html } from "@react-three/drei";
 import React from "react";
-import { EARTH_RADIUS_TO_SOLAR_RADIUS } from "./util";
-
-function starColor(starClass) {
-  switch (starClass) {
-    case "O":
-      return "#98adf9";
-    case "B":
-      return "#9fb4ed";
-    case "A":
-      return "#bbc6ea";
-    case "F":
-      return "#eaeaef";
-    case "G":
-      return "#ede2da";
-    case "K":
-      return "#ecc498";
-    case "M":
-      return "#f7c76c";
-    default:
-      return "#ede2da";   // this is fairly generic color iirc
-  }
-}
+import { EARTH_RADIUS_TO_SOLAR_RADIUS, starColor } from "./util";
 
 export default function Star({ name, radius, starClass, habitableZone, setTargetPosition, orbitCallback }) {
   return (

@@ -24,7 +24,6 @@ function DiameterScrollbar({ telescopeDiam, setTelescopeDiam }) {
   );
 }
 
-
 export default function SystemList({
   stars,
   getSystemScore,
@@ -46,6 +45,13 @@ export default function SystemList({
           (currPlanet.semiMajorAxis *
             (1 - Math.pow(currPlanet.eccentricity, 2))) /
             (1 - currPlanet.eccentricity) -
+            (stars[starName].habitableMin + stars[starName].habitableMax) / 2
+        ) <
+          (stars[starName].habitableMax - stars[starName].habitableMin) / 2 &&
+        Math.abs(
+          (currPlanet.semiMajorAxis *
+            (1 - Math.pow(currPlanet.eccentricity, 2))) /
+            (1 + currPlanet.eccentricity) -
             (stars[starName].habitableMin + stars[starName].habitableMax) / 2
         ) <
           (stars[starName].habitableMax - stars[starName].habitableMin) / 2
@@ -81,8 +87,16 @@ export default function SystemList({
         flexDirection: "column",
       }}
     >
-      <h2 style={{ textAlign: "center", color: "#50e67d" }}>Top Habitable Systems</h2>
-      <div style={{ marginLeft: "auto", marginRight: "auto", marginBottom: "20px" }}>
+      <h2 style={{ textAlign: "center", color: "#50e67d" }}>
+        Top Habitable Systems
+      </h2>
+      <div
+        style={{
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: "20px",
+        }}
+      >
         <DiameterScrollbar
           telescopeDiam={telescopeDiam}
           setTelescopeDiam={setTelescopeDiam}

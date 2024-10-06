@@ -77,6 +77,15 @@ export default function EarthOrbitView({
   for (let starName of goodStarNames.values()) {
     for (let i = 0; i < stars[starName].planets.length; i++) {
       const currPlanet = stars[starName].planets[i];
+      // console.log(
+      //   currPlanet.name,
+      //   starName,
+      //   (currPlanet.semiMajorAxis *
+      //     (1 - Math.pow(currPlanet.eccentricity, 2))) /
+      //     (1 - currPlanet.eccentricity),
+      //   (stars[starName].habitableMin + stars[starName].habitableMax) / 2,
+      //   (stars[starName].habitableMax - stars[starName].habitableMin) / 2
+      // );
       if (
         Math.abs(
           (currPlanet.semiMajorAxis *
@@ -84,7 +93,14 @@ export default function EarthOrbitView({
             (1 - currPlanet.eccentricity) -
             (stars[starName].habitableMin + stars[starName].habitableMax) / 2
         ) <
-        (stars[starName].habitableMax - stars[starName].habitableMin) / 2
+          (stars[starName].habitableMax - stars[starName].habitableMin) / 2 &&
+        Math.abs(
+          (currPlanet.semiMajorAxis *
+            (1 - Math.pow(currPlanet.eccentricity, 2))) /
+            (1 + currPlanet.eccentricity) -
+            (stars[starName].habitableMin + stars[starName].habitableMax) / 2
+        ) <
+          (stars[starName].habitableMax - stars[starName].habitableMin) / 2
       ) {
         goodHabitableStarNames.add(starName);
         break;
@@ -92,13 +108,15 @@ export default function EarthOrbitView({
     }
   }
 
+  console.log(goodHabitableStarNames);
+  
+
   const onHover = (event) => {
     console.log(event);
     try {
       setStarName(goodStars[event.instanceId]["name"]);
       setStarPosition(event.point);
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e);
     }
   };

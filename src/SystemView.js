@@ -77,7 +77,6 @@ export default function SystemView({ star, telescopeDiam }) {
       invalidate();
     }
   });
-  console.log(star);
   return (
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />

@@ -10,7 +10,7 @@ import Planet from "./Planet";
 import { Environment } from "@react-three/drei";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { lerp } from "three/src/math/MathUtils.js";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 
 // name,
 // radius,
@@ -28,7 +28,7 @@ function getMaxSemiMajorAxis(planets) {
 }
 
 export default function SystemView({ star }) {
-  console.log(star);
+  const { invalidate, gl } = useThree();
   const maxSemiMajorAxis = getMaxSemiMajorAxis(star.planets);
 
   const initialPosition = [
@@ -47,14 +47,23 @@ export default function SystemView({ star }) {
       t[1] + (Math.cos(Math.PI / 4) * radius) / 10,
       t[2] + (Math.sin(Math.PI / 4) * radius) / 10,
     ]);
+    invalidate();
   };
-  // useFrame(() => {
-  //   const newX = lerp(position[0], futurePosition[0], 0.05); // Adjust 0.05 for speed
-  //   const newY = lerp(position[1], futurePosition[1], 0.05);
-  //   const newZ = lerp(position[2], futurePosition[2], 0.05);
+  useFrame(() => {
+    const newX = lerp(position[0], futurePosition[0], 0.2); // Adjust 0.05 for speed
+    const newY = lerp(position[1], futurePosition[1], 0.2);
+    const newZ = lerp(position[2], futurePosition[2], 0.2);
 
-  //   setPosition([newX, newY, newZ]);
-  // });
+    if (
+      Math.pow(futurePosition[0] - position[0], 2) +
+        Math.pow(futurePosition[1] - position[1], 2) +
+        Math.pow(futurePosition[2] - position[2], 2) >
+      1e-5
+    ) {
+      setPosition([newX, newY, newZ]);
+      invalidate();
+    }
+  });
   return (
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />

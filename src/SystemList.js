@@ -2,12 +2,34 @@ import React from "react";
 import { starColor } from "./util";
 import "./SystemList.css";
 
+function DiameterScrollbar({ telescopeDiam, setTelescopeDiam }) {
+  const handleChange = (e) => {
+    setTelescopeDiam(Number(e.target.value));
+  };
+
+  return (
+    <div style={{ zIndex: 999, color: "white" }}>
+      <input
+        type="range"
+        id="telescopeDiameter"
+        min={5}
+        max={15}
+        step={0.1}
+        value={telescopeDiam}
+        onChange={handleChange}
+      />
+      <div>{`Telescope diameter: ${telescopeDiam} m`}</div>
+    </div>
+  );
+}
+
 export default function SystemList({
   stars,
   getSystemScore,
   systemScoreName,
   setSystemName,
   telescopeDiam,
+  setTelescopeDiam,
 }) {
   // sort in descending order
   let systemList = [];
@@ -55,6 +77,23 @@ export default function SystemList({
         zIndex: "30",
       }}
     >
+      <div style={{ marginLeft: "0.5em", marginRight: "0.5em" }}>
+        <div
+          style={{
+            fontWeight: 500,
+            fontSize: "1.5rem",
+          }}
+        >
+          Stars with HWO-observable exoplanets
+        </div>
+        <div>
+          ranked by their habitability
+        </div>
+        <DiameterScrollbar
+          telescopeDiam={telescopeDiam}
+          setTelescopeDiam={setTelescopeDiam}
+        />
+      </div>
       {systemList.slice(0, 100).map(([score, name, color], idx) => {
         return (
           <div
@@ -66,19 +105,19 @@ export default function SystemList({
             }}
             key={idx}
           >
-            <div style={{ fontWeight: 500, fontSize: "2rem", color: color }}>
-              {name}
-            </div>
-            <div style={{ marginTop: "0.25em" }}>
-              Top planet has {systemScoreName}{" "}
-              <span>{Math.round(100 * score) / 100}</span>
-            </div>
-            <div
-              style={{ marginTop: "0.25em", fontWeight: 500 }}
-              className={"underline-hover"}
-              onClick={() => setSystemName(name)}
-            >
-              Learn more about this system!
+            <div>
+              <span
+                style={{
+                  fontWeight: 500,
+                  fontSize: "1.5rem",
+                  color: color,
+                  marginRight: "1rem",
+                }}
+                className={"underline-hover"}
+              >
+                {name}
+              </span>
+              {`(hab. ${Math.round(100 * score) / 100})`}
             </div>
           </div>
         );

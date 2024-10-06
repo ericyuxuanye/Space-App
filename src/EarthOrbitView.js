@@ -59,7 +59,9 @@ export default function EarthOrbitView({
 
   const goodStars = [];
   const goodStarNames = new Set();
+  const starFromIdx = [];
   for (let starName of Object.keys(stars)) {
+    starFromIdx.push(starName);
     for (let i = 0; i < stars[starName].planets.length; i++) {
       const currPlanet = stars[starName].planets[i];
       if (
@@ -114,7 +116,10 @@ export default function EarthOrbitView({
   const onHover = (event) => {
     console.log(event);
     try {
-      setStarName(goodStars[event.instanceId]["name"]);
+      if (!goodStarNames.has(starFromIdx[event.instanceId])) {
+        return;
+      }
+      setStarName(starFromIdx[event.instanceId]);
       setStarPosition(event.point);
     } catch (e) {
       console.log(e);

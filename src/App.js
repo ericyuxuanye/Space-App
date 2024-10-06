@@ -49,7 +49,7 @@ export default function App() {
       {/* <MySideNav classname="sidenav"></MySideNav> */}
     <Canvas
       style={{ background: "black", width: "100vw", height: "100vh" }}
-      //camera={{ position: [0, Math.cos(Math.PI / 4) * 100, Math.sin(Math.PI/4) * 100], fov: 50 }}  // Set the initial camera position
+      frameloop="demand"
     >
       <SystemView star={transformedData["24 Sex"]} />
     </Canvas>

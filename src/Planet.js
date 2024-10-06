@@ -66,7 +66,7 @@ export default function Planet({
                   transition={{ duration: 0.3 }}
                   style={{
                     position: "absolute",
-                    top: "-30px", // Adjust the position of the tooltip
+                    top: "30px",
                     left: "50%",
                     transform: "translateX(-50%)",
                     backgroundColor: "black",
@@ -76,7 +76,12 @@ export default function Planet({
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {`${name} has radius ${radius}x Earth's`}
+                  <div>
+                    {`${name} has radius ${radius}x Earth's`}
+                  </div>
+                  <div>
+                    {`Click to learn more`}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

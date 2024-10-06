@@ -94,8 +94,13 @@ export default function EarthOrbitView({
 
   const onHover = (event) => {
     console.log(event);
-    setStarName(goodStars[event.instanceId]["name"]);
-    setStarPosition(event.point);
+    try {
+      setStarName(goodStars[event.instanceId]["name"]);
+      setStarPosition(event.point);
+    }
+    catch (e) {
+      console.log(e);
+    }
   };
   // useEffect(() => {
   //   for (let i = 0; i < goodStars.length; i++) {

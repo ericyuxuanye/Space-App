@@ -38,15 +38,15 @@ for index, row in df.iterrows():
             "Stellar Radius": row['Stellar Radius'],
             "Inclination": row['Inclination'],
             "Habitable-Zone": habitable(row['Orbital Semi-Major Axis'], habitable_val[0], habitable_val[1]),
-            "Limiting_Distance": limiting_distance(row['Orbital Semi-Major Axis']),
-            "SNR": signal_noise_ratio(row['Stellar Radius'], row['Exoplanet Radius (Earth Units)'], row['Distance'], row['Orbital Semi-Major Axis'], SNR0=100),
             "Planets": {}
         }
     
     planet_name = row['Exoplanet Name']
     grouped_by_star[star_name]["Planets"][planet_name] = {
         "Eccentricity": row['Eccentricity'],
+        "Limiting_Distance": limiting_distance(row['Orbital Semi-Major Axis']),
         "Exoplanet Radius": row['Exoplanet Radius (Earth Units)'],
+        "SNR": signal_noise_ratio(row['Stellar Radius'], row['Exoplanet Radius (Earth Units)'], row['Distance'], row['Orbital Semi-Major Axis'], SNR0=100),
         "Orbital Semi-Major Axis": row['Orbital Semi-Major Axis']
     }
 
@@ -55,7 +55,7 @@ for index, row in df.iterrows():
             habitable_rows[star_name] = grouped_by_star[star_name]
 
 json_data_habitable = json.dumps(grouped_by_star, indent=4)
-json_data = open("planetarydata.json","w")
+json_data = open("./src/planetarydata.json","w")
 json_data.write(json_data_habitable)
 json_data.close
 

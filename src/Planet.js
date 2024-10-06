@@ -37,6 +37,7 @@ export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
         <meshStandardMaterial color="white" />
         <Html position={[0, -0.5, 0]} center>
           <div
+            onClick={() => console.log(name + " clicked")}
             style={{
               fontSize: "20px",
               color: "yellow",

@@ -80,17 +80,6 @@ export default function SystemList({
       }}
     >
       <div style={{ marginLeft: "0.5em", marginRight: "0.5em" }}>
-        <div
-          style={{
-            fontWeight: 500,
-            fontSize: "1.5rem",
-          }}
-        >
-          Stars with HWO-observable exoplanets
-        </div>
-        <div>
-          ranked by their habitability
-        </div>
         <DiameterScrollbar
           telescopeDiam={telescopeDiam}
           setTelescopeDiam={setTelescopeDiam}

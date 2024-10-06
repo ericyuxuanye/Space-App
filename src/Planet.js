@@ -86,7 +86,7 @@ export default function Planet({
           >
             {showOrbit ? name : <a style={{color: isObservable ? "#4ffbff" : "#ff8d8d"}} href={url} target="_blank" rel="noreferrer">{name}</a>}
             {/* {name} */}
-            <a
+            {/* <a
               href={planetLink}
               target="_blank"
               rel="noopener noreferrer"
@@ -96,7 +96,7 @@ export default function Planet({
               }}
             >
               {name}
-            </a>
+            </a> */}
 
             {clicked && isPlanetView && (
               <div style={{ marginTop: "0.5rem", fontSize: "16px" }}>

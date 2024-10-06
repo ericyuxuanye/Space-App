@@ -13,8 +13,8 @@ import data from "./planetarydata2.json";
 
 import MySideNav from "./Menu";
 import "./sidenav.css";
-import EarthView from "./EarthView";
-import EarthView2 from "./EarthView2";
+// import EarthView from "./EarthView";
+// import EarthView2 from "./EarthView2";
 import EarthOrbitView from "./EarthOrbitView";
 import SystemList from "./SystemList";
 import { NodePath } from "@babel/core";
@@ -142,6 +142,7 @@ export default function App() {
   const [systemName, setSystemName] = useState("");
   const [telescopeDiam, setTelescopeDiam] = useState(6);
 
+  const goBack = () => setSystemName("");
   return (
     <div>
       {systemName === "" ? (
@@ -168,6 +169,22 @@ export default function App() {
               setDiameter={setTelescopeDiam}
             />
           </div>
+          <Canvas
+            style={{
+              background: "black",
+              width: "100vw",
+              height: "100vh",
+              zIndex: 0,
+              top: 0,
+              left: 0,
+            }}
+          >
+            <EarthOrbitView
+              stars={transformedData}
+              isPlanetObservableFunc={() => true}
+              setSystemName={setSystemName}
+            />
+          </Canvas>
         </>
       ) : (
         <>

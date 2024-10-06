@@ -13,11 +13,16 @@ export default function SystemList({
   let systemList = [];
   for (let starName of Object.keys(stars)) {
     for (let i = 0; i < stars[starName].planets.length; i++) {
-      // console.log(starName, stars[starName].planets[i].minSeparationDiam);
-      
+      const currPlanet = stars[starName].planets[i];
       if (
-        stars[starName].planets[i].snr * Math.pow(telescopeDiam, 2) > 5 &&
-        telescopeDiam > stars[starName].planets[i].minSeparationDiam
+        currPlanet.snr * Math.pow(telescopeDiam, 2) > 5 &&
+        telescopeDiam > currPlanet.minSeparationDiam &&
+        Math.abs(
+          currPlanet.semiMajorAxis *
+            (1 - Math.pow(currPlanet.eccentricity, 2)) -
+            (stars[starName].habitableMin + stars[starName].habitableMax) / 2
+        ) <
+          (stars[starName].habitableMax - stars[starName].habitableMin) / 2
       ) {
         systemList.push([
           getSystemScore(stars[starName]),

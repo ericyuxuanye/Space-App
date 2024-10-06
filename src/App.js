@@ -36,10 +36,11 @@ function transformPlanetData(
       (0.4 * sunDistanceToSystem) / (planetData["Limiting_Distance"] + 1e-5),
     habitability: Math.exp(
       -Math.pow(
-        (planetData["Orbital Semi-Major Axis"] *
+        ((planetData["Orbital Semi-Major Axis"] *
           (1 - Math.pow(planetData["Eccentricity"], 2)) -
           (habitableMin + habitableMax) / 2) /
-          (habitableMax - habitableMin),
+          (habitableMax - habitableMin)) *
+          2,
         2
       )
     ),
@@ -67,6 +68,8 @@ function transformStarData(starData) {
   return {
     name: starData["Host Star Name"],
     radius: starData["Stellar Radius"],
+    habitableMin: starData["Habitable-Zone-lower"],
+    habitableMax: starData["Habitable-Zone-upper"],
     starClass: (starData["Spectral Type"] ?? "G").charAt(0),
     planets: planets,
     ...starData,
@@ -129,24 +132,51 @@ export default function App() {
           telescopeDiam={telescopeDiam}
         />
       ) : (
-        <Canvas
-          style={{
-            background: "black",
-            width: "100vw",
-            height: "100vh",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-          frameloop="demand"
-        >
-          <Suspense fallback={<Loader />}>
-            <SystemView
-              star={transformedData[systemName]}
-              telescopeDiam={telescopeDiam}
-            />
-          </Suspense>
-        </Canvas>
+        <>
+          <Canvas
+            style={{
+              background: "black",
+              width: "100vw",
+              height: "100vh",
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            frameloop="demand"
+          >
+            <Suspense fallback={<Loader />}>
+              <SystemView
+                star={transformedData[systemName]}
+                telescopeDiam={telescopeDiam}
+              />
+            </Suspense>
+          </Canvas>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "1.5rem",
+              width: "95vw",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "0.25rem",
+            }}
+          >
+            <div
+              style={{
+                background: "black",
+                padding: "0.5rem",
+                borderRadius: "0.5rem",
+                color: "white",
+              }}
+              onClick={() => {
+                setSystemName("");
+              }}
+            >
+              Return to Milky Way view
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

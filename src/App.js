@@ -123,7 +123,7 @@ function DiameterScrollbar({ diameter, setDiameter }) {
   };
 
   return (
-    <div>
+    <div style={{ zIndex: 999, color: "white" }}>
       <input
         type="range"
         id="telescopeDiameter"
@@ -183,6 +183,7 @@ export default function App() {
               stars={transformedData}
               isPlanetObservableFunc={() => true}
               setSystemName={setSystemName}
+              telescopeDiam={telescopeDiam}
             />
           </Canvas>
         </>

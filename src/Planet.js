@@ -71,6 +71,7 @@ export default function Planet({
               color: isObservable ? "#70ff8c" : "#ff8d8d",
               background: "#00000030",
               borderRadius: "0.5em",
+              padding: "0.5rem",
               position: "relative",
             }}
           >

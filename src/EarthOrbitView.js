@@ -66,24 +66,58 @@ const CameraControls = () => {
   );
 };
 
-export default function EarthOrbitView({ stars, isPlanetObservableFunc, setSystemName }) {
+export default function EarthOrbitView({
+  stars,
+  isPlanetObservableFunc,
+  setSystemName,
+  telescopeDiam,
+}) {
   const ref = useRef();
+  const [starName, setStarName] = React.useState(null);
+  const [starPosition, setStarPosition] = React.useState(null);
+
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
   // const ref = useLayoutEffect((imesh) => {
   //   imesh.setMatrixAt(0, new THREE.Matrix4().makeTranslation(0, 0, 0));
   // });
   const geometry = new SphereGeometry(0.5, 32, 32);
-  const goodStars = Object.values(stars).filter((star) => {
-    return hasObservablePlanet(star, isPlanetObservableFunc);
-  });
-  const intanceMatrix = useMemo(() => new THREE.Matrix4(), []);
+  const goodStars = [];
+  for (let starName of Object.keys(stars)) {
+    for (let i = 0; i < stars[starName].planets.length; i++) {
+      const currPlanet = stars[starName].planets[i];
+      if (
+        currPlanet.snr * Math.pow(telescopeDiam, 2) > 5 &&
+        telescopeDiam > currPlanet.minSeparationDiam
+      ) {
+        goodStars.push(stars[starName]);
+        break;
+      }
+    }
+  }
+  const goodHabitableStarIdxs = new Set();
+  for (let i = 0; i < goodStars.length; i++) {
+    const starName = goodStars[i].name;
+    for (let j = 0; j < stars[starName].planets.length; j++) {
+      const currPlanet = stars[starName].planets[j];
+      if (
+        Math.abs(
+          (currPlanet.semiMajorAxis *
+            (1 - Math.pow(currPlanet.eccentricity, 2))) /
+            (1 - currPlanet.eccentricity) -
+            (stars[starName].habitableMin + stars[starName].habitableMax) / 2
+        ) <
+        (stars[starName].habitableMax - stars[starName].habitableMin) / 2
+      ) {
+        goodHabitableStarIdxs.add(i);
+        break;
+      }
+    }
+  }
   const onHover = (event) => {
     console.log(event);
     setStarName(goodStars[event.instanceId]["name"]);
     setStarPosition(event.point);
   };
-  const [starName, setStarName] = React.useState(null);
-  const [starPosition, setStarPosition] = React.useState(null);
   useEffect(() => {
     for (let i = 0; i < goodStars.length; i++) {
       const star = goodStars[i];
@@ -97,7 +131,11 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc, setSyste
       );
       dummy.updateMatrix();
       ref.current.setMatrixAt(i, dummy.matrix);
-      ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
+      if (goodHabitableStarIdxs.has(i)) {
+        ref.current.setColorAt(i, new THREE.Color("#a2ffb5"));
+      } else {
+        ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
+      }
     }
     ref.current.instanceMatrix.needsUpdate = true;
     ref.current.instanceColor.needsUpdate = true;
@@ -117,14 +155,14 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc, setSyste
         ref={ref}
         args={[null, null, goodStars.length]}
         onPointerEnter={onHover}
+        onClick={() => setSystemName(starName)}
         // onPointerLeave={() => setStarName(null)}
-        // onClick={(e) => setSystemName(goodStars[e.instanceId].name)}
       >
         <sphereGeometry args={[2, 32, 32]} />
         <meshStandardMaterial />
       </instancedMesh>
       {starName && (
-        <Html position={starPosition} onClick={setSystemName(starName)}>
+        <Html position={starPosition}>
           <div
             style={{
               fontSize: "20px",
@@ -133,6 +171,7 @@ export default function EarthOrbitView({ stars, isPlanetObservableFunc, setSyste
               background: "#00000030",
               borderRadius: "0.5em",
             }}
+            onClick={() => setSystemName(starName)}
           >
             {starName}
           </div>

@@ -24,7 +24,6 @@ export default function Planet({ name, radius, semiMajorAxis, eccentricity }) {
   console.log(theta);
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
-  console.log("planet", xProj, yProj);
 
   xProj *= 10;
   yProj *= 10;

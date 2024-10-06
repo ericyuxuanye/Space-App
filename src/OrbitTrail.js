@@ -13,9 +13,6 @@ export default function OrbitTrail({ theta, semiMajorAxis, eccentricity }) {
   for (let i = 0; i <= segments; i++) {
     const angle = theta + (i / segments) * Math.PI * 2;
     let [x, y] = orbitPos(angle, semiMajorAxis, eccentricity);
-    if (i == 0) {
-      console.log("trail", x, y);
-    }
     // temporary; remove this later
     x *= 10;
     y *= 10;

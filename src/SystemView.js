@@ -95,6 +95,8 @@ export default function SystemView({ star, telescopeDiam }) {
           orbitCallback={setOrbit}
           telescopeDiam={telescopeDiam}
           {...planet}
+          isPlanetView={!orbit}
+          returnToSystemView={updateTargetStar}
           // radius={planet.radius}
           // semimajorAxis={planet.semimajorAxis}
           // eccentricity={planet.eccentricity}

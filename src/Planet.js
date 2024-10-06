@@ -31,6 +31,8 @@ export default function Planet({
   orbitCallback,
   minSeparationDiam,
   telescopeDiam,
+  isPlanetView,
+  returnToSystemView,
 }) {
   const [hovered, setHovered] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
@@ -56,8 +58,13 @@ export default function Planet({
             onMouseOver={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => {
-              setTargetPosition([xProj, 0, yProj], radius);
-              orbitCallback(false);
+              if (isPlanetView) {
+                returnToSystemView();
+                orbitCallback(true);
+              } else {
+                setTargetPosition([xProj, 0, yProj], radius);
+                orbitCallback(false);
+              }
             }}
             style={{
               fontSize: "20px",
@@ -88,19 +95,27 @@ export default function Planet({
                     zIndex: 100,
                   }}
                 >
-                  <div>{`${name} has estimated habitability ${
-                    Math.round(1000 * habitability) / 1000
-                  }`}</div>
-                  <div>
-                    {isObservable
-                      ? `A ${telescopeDiam}m diameter HWO is powerful enough to observe ${name}!`
-                      : `Unfortunately, a ${telescopeDiam}m HWO isn't powerful enough to observe ${name}.`}
-                  </div>
-                  <div>{`The HWO needs a diameter of at least ${Math.max(
-                    Math.round(10 * Math.pow(5 / snr, 1 / 2)) / 10,
-                    Math.round(10 * minSeparationDiam) / 10
-                  )} m to be able to observe ${name}.`}</div>
-                  <div>{`Click to zoom in and learn more!`}</div>
+                  {isPlanetView ? (
+                    <>
+                      <div>{"Click to return to system view"}</div>
+                    </>
+                  ) : (
+                    <>
+                      <div>{`${name} has estimated habitability ${
+                        Math.round(1000 * habitability) / 1000
+                      }`}</div>
+                      <div>
+                        {isObservable
+                          ? `A ${telescopeDiam}m diameter HWO is powerful enough to observe ${name}!`
+                          : `Unfortunately, a ${telescopeDiam}m HWO isn't powerful enough to observe ${name}.`}
+                      </div>
+                      <div>{`The HWO needs a diameter of at least ${Math.max(
+                        Math.round(10 * Math.pow(5 / snr, 1 / 2)) / 10,
+                        Math.round(10 * minSeparationDiam) / 10
+                      )} m to be able to observe ${name}.`}</div>
+                      <div>{`Click to zoom in and learn more!`}</div>
+                    </>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

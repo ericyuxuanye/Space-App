@@ -45,6 +45,11 @@ def habitable_zone_lim(st_teff, st_lum):
 
 # print( signal_noise_ratio(13.76, 12.2,93.1846,1.178))
 
+temp = 4816
+luminosity = 1.877
+
+print(habitable_zone_lim(temp,luminosity))
+
 def habitable(val, lower, upper):
 
     if np.isnan(val) or np.isnan(lower) or np.isnan(upper):

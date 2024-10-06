@@ -19,7 +19,7 @@ export default function Star({ name, radius, starClass, habitableZone, setTarget
             fontSize: "20px",
             color: starColor(starClass),
             padding: "0.5em",
-            background: "#00000030",
+            background: "#00000060",
             borderRadius: "0.5em",
           }}
           onClick={() => {

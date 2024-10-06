@@ -7,17 +7,23 @@ export default function SystemList({
   getSystemScore,
   systemScoreName,
   setSystemName,
+  telescopeDiam,
 }) {
   // sort in descending order
-  const systemList = [];
+  let systemList = [];
   for (let starName of Object.keys(stars)) {
-    systemList.push([
-      getSystemScore(stars[starName]),
-      starName,
-      starColor(stars[starName].starClass),
-    ]);
+    for (let i = 0; i < stars[starName].planets.length; i++) {
+      if (stars[starName].planets[i].snr * Math.pow(telescopeDiam, 4) > 5) {
+        systemList.push([
+          getSystemScore(stars[starName]),
+          starName,
+          starColor(stars[starName].starClass),
+        ]);
+      }
+    }
   }
   systemList.sort((a, b) => b[0] - a[0]);
+  
 
   return (
     <div

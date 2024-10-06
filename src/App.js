@@ -33,7 +33,8 @@ function transformPlanetData(
     snr: planetData["SNR"],
     habitability: Math.exp(
       -Math.pow(
-        (planetData["Orbital Semi-Major Axis"] -
+        (planetData["Orbital Semi-Major Axis"] *
+          (1 - Math.pow(planetData["Eccentricity"], 2)) -
           (habitableMin + habitableMax) / 2) /
           (habitableMax - habitableMin),
         2
@@ -87,7 +88,7 @@ function getStarSNRScore(starData) {
 function getStarHabitabilityScore(starData) {
   let maxHab = -1;
   for (let planetName of Object.keys(starData.planets)) {
-    if (starData.planets[planetName].snr > maxHab) {
+    if (starData.planets[planetName].habitability > maxHab) {
       maxHab = starData.planets[planetName].habitability;
     }
   }
@@ -111,6 +112,7 @@ function Loader() {
 
 export default function App() {
   const [systemName, setSystemName] = useState("");
+  const [telescopeDiam, setTelescopeDiam] = useState(6);
 
   return (
     <div>
@@ -120,6 +122,7 @@ export default function App() {
           getSystemScore={getStarHabitabilityScore}
           systemScoreName={"habitability"}
           setSystemName={setSystemName}
+          telescopeDiam={telescopeDiam}
         />
       ) : (
         <Canvas
@@ -134,7 +137,7 @@ export default function App() {
           frameloop="demand"
         >
           <Suspense fallback={<Loader />}>
-            <SystemView star={transformedData[systemName]} />
+            <SystemView star={transformedData[systemName]} telescopeDiam={telescopeDiam} />
           </Suspense>
         </Canvas>
       )}

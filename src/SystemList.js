@@ -14,12 +14,14 @@ export default function SystemList({
   for (let starName of Object.keys(stars)) {
     for (let i = 0; i < stars[starName].planets.length; i++) {
       const currPlanet = stars[starName].planets[i];
+
       if (
         currPlanet.snr * Math.pow(telescopeDiam, 2) > 5 &&
         telescopeDiam > currPlanet.minSeparationDiam &&
         Math.abs(
-          currPlanet.semiMajorAxis *
-            (1 - Math.pow(currPlanet.eccentricity, 2)) -
+          (currPlanet.semiMajorAxis *
+            (1 - Math.pow(currPlanet.eccentricity, 2))) /
+            (1 - currPlanet.eccentricity) -
             (stars[starName].habitableMin + stars[starName].habitableMax) / 2
         ) <
           (stars[starName].habitableMax - stars[starName].habitableMin) / 2
@@ -41,7 +43,7 @@ export default function SystemList({
         padding: "1em",
         borderRadius: "0.5rem",
         margin: "1rem",
-        height: "30vh",
+        height: "90vh",
         background: "#1a1a1a",
         color: "#6D87A8",
         zIndex: "10",

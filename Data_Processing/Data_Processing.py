@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import simplejson
 import numpy as np
 from algo import signal_noise_ratio, limiting_distance, habitable_zone_lim, habitable
 import xgboost as xgb
@@ -73,7 +74,7 @@ for index, row in df.iterrows():
         if star_name not in habitable_rows:
             habitable_rows[star_name] = grouped_by_star[star_name]
 
-json_data_habitable = json.dumps(grouped_by_star, indent=4)
+json_data_habitable = simplejson.dumps(grouped_by_star, ignore_nan=True)
 json_data = open("../src/planetarydata.json","w")
 json_data.write(json_data_habitable)
 json_data.close

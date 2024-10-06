@@ -15,16 +15,19 @@ import { Environment } from "@react-three/drei";
 // eccentricity,
 
 export default function SystemView({ star, setTargetPosition }) {
-
+  console.log(star);
+  const [orbit, setOrbit] = useState(true);
   return (
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />
-      <Star setTargetPosition={setTargetPosition} {...star} />
+      <Star setTargetPosition={setTargetPosition} orbitCallback={setOrbit} {...star} />
       <ambientLight intensity={0.05} />
       {star.planets.map((planet, i) => (
         <Planet
           key={i}
           setTargetPosition={setTargetPosition}
+          showOrbit={orbit}
+          orbitCallback={setOrbit}
           {...planet}
           // radius={planet.radius}
           // semimajorAxis={planet.semimajorAxis}

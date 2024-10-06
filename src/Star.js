@@ -22,12 +22,12 @@ function starColor(starClass) {
   }
 }
 
-export default function Star({ name, radius, starClass, habitableZone, setTargetPosition }) {
+export default function Star({ name, radius, starClass, habitableZone, setTargetPosition, orbitCallback }) {
   return (
     <mesh>
       <sphereGeometry args={[radius, 32, 32]} />
       {/* Increased emissiveIntensity for stronger glow */}
-      <pointLight color={starColor(starClass)} intensity={100} decay={1} />
+      <pointLight color={starColor(starClass)} intensity={1} decay={0} />
       <meshStandardMaterial
         emissive={starColor(starClass)}
         emissiveIntensity={4}
@@ -42,7 +42,10 @@ export default function Star({ name, radius, starClass, habitableZone, setTarget
             background: "#00000030",
             borderRadius: "0.5em",
           }}
-          onClick={() => setTargetPosition([0, 0, 0])}
+          onClick={() => {
+            setTargetPosition([0, 0, 0]);
+            orbitCallback(true);
+          }}
         >
           {name}
         </div>

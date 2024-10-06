@@ -14,8 +14,8 @@ export default function OrbitTrail({ theta, semiMajorAxis, eccentricity }) {
     const angle = theta + (i / segments) * Math.PI * 2;
     let [x, y] = orbitPos(angle, semiMajorAxis, eccentricity);
     // temporary; remove this later
-    x *= 10;
-    y *= 10;
+    // x *= 10;
+    // y *= 10;
     points.push(new THREE.Vector3(x, 0, y));
   }
 

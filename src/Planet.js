@@ -1,6 +1,6 @@
 import { MersenneTwister19937, real } from "random-js";
 import React, { useState } from "react";
-import { orbitPos } from "./util";
+import { EARTH_RADIUS_TO_SOLAR_RADIUS, orbitPos } from "./util";
 import OrbitTrail from "./OrbitTrail";
 import { Html } from "@react-three/drei";
 import { AnimatePresence, motion } from "framer-motion";
@@ -24,33 +24,38 @@ export default function Planet({
   radius,
   semiMajorAxis,
   eccentricity,
-  setTargetPosition
+  setTargetPosition,
+  showOrbit,
+  orbitCallback,
 }) {
   const [hovered, setHovered] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
   const theta = real(0, 2 * Math.PI, false)(mt);
 
   let [xProj, yProj] = orbitPos(theta, semiMajorAxis, eccentricity);
-  console.log("planet" + name, xProj, yProj);
 
-  xProj *= 10;
-  yProj *= 10;
+  // xProj *= 10;
+  // yProj *= 10;
 
   return (
     <>
       <mesh position={[xProj, 0, yProj]}>
-        <sphereGeometry args={[radius, 32, 32]} />
+        <sphereGeometry
+          args={[radius * EARTH_RADIUS_TO_SOLAR_RADIUS, 32, 32]}
+        />
         {/* Increased emissiveIntensity for stronger glow */}
         <meshStandardMaterial color="white" />
-        <Html position={[0, -0.5, 0]} center>
+        <Html position={[0, 0, 0]} center>
           <div
             onMouseOver={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            onClick={() => setTargetPosition([xProj, 0, yProj])}
+            onClick={() => {
+              setTargetPosition([xProj, 0, yProj]);
+              orbitCallback(false);
+            }}
             style={{
               fontSize: "20px",
               color: "yellow",
-              padding: "0.5em",
               background: "#00000030",
               borderRadius: "0.5em",
               position: "relative",
@@ -76,23 +81,19 @@ export default function Planet({
                     whiteSpace: "nowrap",
                   }}
                 >
-                  <div>
-                    {`${name} has radius ${radius}x Earth's`}
-                  </div>
-                  <div>
-                    {`Click to learn more`}
-                  </div>
+                  <div>{`${name} has radius ${radius}x Earth's`}</div>
+                  <div>{`Click to zoom in and learn more`}</div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </Html>
       </mesh>
-      <OrbitTrail
+      {showOrbit && <OrbitTrail
         theta={theta}
         semiMajorAxis={semiMajorAxis}
         eccentricity={eccentricity}
-      />
+      />}
     </>
   );
 }

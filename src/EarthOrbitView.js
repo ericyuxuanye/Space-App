@@ -33,26 +33,6 @@ function hasObservablePlanet(star, isPlanetObservableFunc) {
 }
 
 const CameraControls = () => {
-  // const controlsRef = useRef();
-  // const cameraRef = useRef();
-
-  // // Custom camera update function
-  // const updateCameraOrbit = () => {
-  //   const forward = new THREE.Vector3();
-  //   cameraRef.current.getWorldDirection(forward);
-  //   controlsRef.current.target.copy(cameraRef.current.position).add(forward);
-  // };
-
-  // useEffect(() => {
-
-  //   const controls = controlsRef.current;
-  //   if (controls) {
-  //     // controls.addEventListener('end', updateCameraOrbit);
-  //     // return () => controls.removeEventListener('end', updateCameraOrbit);
-  //     console.log(controls)
-  //     controls.current.rotateSpeed=-0.5;
-  //   }
-  // }, []);
   return (
     <>
       <perspectiveCamera makeDefault fov={60} position={[0, 0, 0]} />
@@ -77,11 +57,6 @@ export default function EarthOrbitView({
   const [starPosition, setStarPosition] = React.useState(null);
   const { invalidate, gl } = useThree();
 
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  // const ref = useLayoutEffect((imesh) => {
-  //   imesh.setMatrixAt(0, new THREE.Matrix4().makeTranslation(0, 0, 0));
-  // });
-  const geometry = new SphereGeometry(0.5, 32, 32);
   const goodStars = [];
   const goodStarNames = new Set();
   for (let starName of Object.keys(stars)) {
@@ -191,13 +166,9 @@ export default function EarthOrbitView({
   return (
     <>
       <ambientLight intensity={60} />
-      {/* {Object.keys(goodStars).map((starName, idx) => {
-        const starData = goodStars[starName];
-        return <SimpleStar key={starName} name={starData.name} ra={starData["Proper Motion(ra)"]} dec={starData["Proper Motion(dec)"]} distSun={1000}/>;
-      })} */}
       <instancedMesh
         ref={ref}
-        args={[null, null, goodStars.length]}
+        args={[null, null, Object.keys(stars).length]}
         onPointerEnter={onHover}
         onClick={() => setSystemName(starName)}
         // onPointerLeave={() => setStarName(null)}

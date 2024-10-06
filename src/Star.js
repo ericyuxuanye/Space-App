@@ -1,5 +1,6 @@
 import { Html } from "@react-three/drei";
 import React from "react";
+import { EARTH_RADIUS_TO_SOLAR_RADIUS } from "./util";
 
 function starColor(starClass) {
   switch (starClass) {
@@ -43,7 +44,7 @@ export default function Star({ name, radius, starClass, habitableZone, setTarget
             borderRadius: "0.5em",
           }}
           onClick={() => {
-            setTargetPosition([0, 0, 0], radius);
+            setTargetPosition([0, 0, 0], radius / EARTH_RADIUS_TO_SOLAR_RADIUS);
             orbitCallback(true);
           }}
         >

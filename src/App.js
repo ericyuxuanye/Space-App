@@ -15,7 +15,6 @@ import * as THREE from 'three';
 import "./sidenav.css"
 
 export default function App() {
-  const controlsRef = useRef()
   const [position, setPosition] = useState([0, Math.cos(Math.PI / 4) * 100, Math.sin(Math.PI/4) * 100]);
   const [target, setTarget] = useState(
     [0, 0, 0]

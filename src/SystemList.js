@@ -13,17 +13,22 @@ export default function SystemList({
   let systemList = [];
   for (let starName of Object.keys(stars)) {
     for (let i = 0; i < stars[starName].planets.length; i++) {
-      if (stars[starName].planets[i].snr * Math.pow(telescopeDiam, 4) > 5) {
+      // console.log(starName, stars[starName].planets[i].minSeparationDiam);
+      
+      if (
+        stars[starName].planets[i].snr * Math.pow(telescopeDiam, 2) > 5 &&
+        telescopeDiam > stars[starName].planets[i].minSeparationDiam
+      ) {
         systemList.push([
           getSystemScore(stars[starName]),
           starName,
           starColor(stars[starName].starClass),
         ]);
+        break;
       }
     }
   }
   systemList.sort((a, b) => b[0] - a[0]);
-  
 
   return (
     <div

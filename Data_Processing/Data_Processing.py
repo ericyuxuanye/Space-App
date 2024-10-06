@@ -58,6 +58,9 @@ for index, row in df.iterrows():
             "Inclination": row['Inclination'],
             "Habitable-Zone-lower": habitable_val[0],
             "Habitable-Zone-upper": habitable_val[1],
+            "Distance": row["Distance"],
+            'Proper Motion(ra)': row['Proper Motion(ra)'],
+            'Proper Motion(dec)': row['Proper Motion(dec)'],
             "Planets": {}
         }
     

@@ -29,6 +29,7 @@ export default function Planet({
   setTargetPosition,
   showOrbit,
   orbitCallback,
+  minSeparationDiam,
   telescopeDiam,
 }) {
   const [hovered, setHovered] = useState(false);
@@ -40,7 +41,6 @@ export default function Planet({
   // xProj *= 10;
   // yProj *= 10;
   console.log(snr, telescopeDiam);
-  
 
   return (
     <>
@@ -91,13 +91,15 @@ export default function Planet({
                     Math.round(1000 * habitability) / 1000
                   }`}</div>
                   <div>
-                    {snr * Math.pow(telescopeDiam, 4) > 5
+                    {snr * Math.pow(telescopeDiam, 2) > 5 &&
+                    telescopeDiam > minSeparationDiam
                       ? `A ${telescopeDiam}m diameter HWO is powerful enough to observe ${name}!`
                       : `Unfortunately, a ${telescopeDiam}m HWO isn't powerful enough to observe ${name}.`}
                   </div>
-                  <div>{`The HWO needs a diameter of at least ${
-                    Math.round(10 * Math.pow(5 / snr, 1 / 4)) / 10
-                  } m to be able to observe ${name}.`}</div>
+                  <div>{`The HWO needs a diameter of at least ${Math.max(
+                    Math.round(10 * Math.pow(5 / snr, 1 / 2)) / 10,
+                    minSeparationDiam
+                  )} m to be able to observe ${name}.`}</div>
                   <div>{`Click to zoom in and learn more!`}</div>
                 </motion.div>
               )}

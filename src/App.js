@@ -9,7 +9,7 @@ import {
 } from "@react-three/drei";
 import SystemView from "./SystemView";
 import mockdata from "./data.json";
-import data from "./planetarydata.json";
+import data from "./planetarydata2.json";
 
 import MySideNav from "./Menu";
 import "./sidenav.css";
@@ -22,6 +22,7 @@ import { NodePath } from "@babel/core";
 function transformPlanetData(
   planetName,
   planetData,
+  sunDistanceToSystem,
   habitableMin,
   habitableMax
 ) {
@@ -31,6 +32,8 @@ function transformPlanetData(
     semiMajorAxis: planetData["Orbital Semi-Major Axis"],
     eccentricity: planetData["Eccentricity"],
     snr: planetData["SNR"],
+    minSeparationDiam:
+      (0.4 * sunDistanceToSystem) / (planetData["Limiting_Distance"] + 1e-5),
     habitability: Math.exp(
       -Math.pow(
         (planetData["Orbital Semi-Major Axis"] *
@@ -51,6 +54,7 @@ function transformStarData(starData) {
       transformPlanetData(
         planetName,
         planetData,
+        starData["Distance"],
         starData["Habitable-Zone-lower"],
         starData["Habitable-Zone-upper"]
       )
@@ -137,7 +141,10 @@ export default function App() {
           frameloop="demand"
         >
           <Suspense fallback={<Loader />}>
-            <SystemView star={transformedData[systemName]} telescopeDiam={telescopeDiam} />
+            <SystemView
+              star={transformedData[systemName]}
+              telescopeDiam={telescopeDiam}
+            />
           </Suspense>
         </Canvas>
       )}

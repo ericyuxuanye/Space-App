@@ -39,7 +39,7 @@ function transformPlanetData(
         (planetData["Orbital Semi-Major Axis"] *
           (1 - Math.pow(planetData["Eccentricity"], 2)) -
           (habitableMin + habitableMax) / 2) /
-          (habitableMax - habitableMin),
+          (habitableMax - habitableMin) * 2,
         2
       )
     ),
@@ -67,6 +67,8 @@ function transformStarData(starData) {
   return {
     name: starData["Host Star Name"],
     radius: starData["Stellar Radius"],
+    habitableMin: starData["Habitable-Zone-lower"],
+    habitableMax: starData["Habitable-Zone-upper"],
     starClass: (starData["Spectral Type"] ?? "G").charAt(0),
     planets: planets,
     ...starData,

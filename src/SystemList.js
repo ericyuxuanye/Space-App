@@ -1,6 +1,7 @@
 import React from "react";
 import { starColor } from "./util";
 import "./SystemList.css";
+import { Center } from "@react-three/drei";
 
 function DiameterScrollbar({ telescopeDiam, setTelescopeDiam }) {
   const handleChange = (e) => {
@@ -22,7 +23,7 @@ function DiameterScrollbar({ telescopeDiam, setTelescopeDiam }) {
     </div>
   );
 }
-import { Center } from "@react-three/drei";
+
 
 export default function SystemList({
   stars,

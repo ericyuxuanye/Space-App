@@ -75,6 +75,7 @@ export default function EarthOrbitView({
   const ref = useRef();
   const [starName, setStarName] = React.useState(null);
   const [starPosition, setStarPosition] = React.useState(null);
+  const { invalidate, gl } = useThree();
 
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
   // const ref = useLayoutEffect((imesh) => {
@@ -82,6 +83,7 @@ export default function EarthOrbitView({
   // });
   const geometry = new SphereGeometry(0.5, 32, 32);
   const goodStars = [];
+  const goodStarNames = new Set();
   for (let starName of Object.keys(stars)) {
     for (let i = 0; i < stars[starName].planets.length; i++) {
       const currPlanet = stars[starName].planets[i];
@@ -90,15 +92,16 @@ export default function EarthOrbitView({
         telescopeDiam > currPlanet.minSeparationDiam
       ) {
         goodStars.push(stars[starName]);
+        goodStarNames.add(starName);
         break;
       }
     }
   }
-  const goodHabitableStarIdxs = new Set();
-  for (let i = 0; i < goodStars.length; i++) {
-    const starName = goodStars[i].name;
-    for (let j = 0; j < stars[starName].planets.length; j++) {
-      const currPlanet = stars[starName].planets[j];
+
+  const goodHabitableStarNames = new Set();
+  for (let starName of goodStarNames.values()) {
+    for (let i = 0; i < stars[starName].planets.length; i++) {
+      const currPlanet = stars[starName].planets[i];
       if (
         Math.abs(
           (currPlanet.semiMajorAxis *
@@ -108,38 +111,79 @@ export default function EarthOrbitView({
         ) <
         (stars[starName].habitableMax - stars[starName].habitableMin) / 2
       ) {
-        goodHabitableStarIdxs.add(i);
+        goodHabitableStarNames.add(starName);
         break;
       }
     }
   }
+
   const onHover = (event) => {
     console.log(event);
     setStarName(goodStars[event.instanceId]["name"]);
     setStarPosition(event.point);
   };
+  // useEffect(() => {
+  //   for (let i = 0; i < goodStars.length; i++) {
+  //     const star = goodStars[i];
+  //     const dummy = new THREE.Object3D();
+  //     dummy.position.set(
+  //       ...convertRADecToXYZ(
+  //         star["Proper Motion(ra)"],
+  //         star["Proper Motion(dec)"],
+  //         1000
+  //       )
+  //     );
+  //     dummy.updateMatrix();
+  //     ref.current.setMatrixAt(i, dummy.matrix);
+  //     if (goodHabitableStarIdxs.has(i)) {
+  //       ref.current.setColorAt(i, new THREE.Color("#a2ffb5"));
+  //     } else {
+  //       ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
+  //     }
+  //   }
+  //   ref.current.instanceMatrix.needsUpdate = true;
+  //   ref.current.instanceColor.needsUpdate = true;
+  // }, [goodStars]);
+
   useEffect(() => {
-    for (let i = 0; i < goodStars.length; i++) {
-      const star = goodStars[i];
+    let i = 0;
+    for (let starName of Object.keys(stars)) {
+      const star = stars[starName];
       const dummy = new THREE.Object3D();
       dummy.position.set(
         ...convertRADecToXYZ(
           star["Proper Motion(ra)"],
           star["Proper Motion(dec)"],
-          1000
+          1000 // change?
         )
       );
       dummy.updateMatrix();
       ref.current.setMatrixAt(i, dummy.matrix);
-      if (goodHabitableStarIdxs.has(i)) {
-        ref.current.setColorAt(i, new THREE.Color("#a2ffb5"));
-      } else {
-        ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
-      }
+      i += 1;
     }
     ref.current.instanceMatrix.needsUpdate = true;
+  }, []);
+
+  useEffect(() => {
+    console.log(telescopeDiam);
+    let i = 0;
+    for (let starName of Object.keys(stars)) {
+      const star = stars[starName];
+      if (goodHabitableStarNames.has(starName)) {
+        ref.current.setColorAt(i, new THREE.Color("#a2ffb5"));
+      } else if (goodStarNames.has(starName)) {
+        ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
+      } else {
+        ref.current.setColorAt(i, new THREE.Color("#000000"));
+      }
+      i += 1;
+    }
     ref.current.instanceColor.needsUpdate = true;
-  }, [goodStars]);
+    console.log(ref);
+
+    // invalidate();
+  }, [telescopeDiam]);
+
   // const starLocs = goodStars.map((star) => {
   //   return convertRADecToXYZ(star["Proper Motion(ra)"], star["Proper Motion(dec)"], 1000);
   // });

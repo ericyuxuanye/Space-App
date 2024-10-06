@@ -114,6 +114,7 @@ export default function SystemList({
                   marginRight: "1rem",
                 }}
                 className={"underline-hover"}
+                onClick={() => setSystemName(name)}
               >
                 {name}
               </span>

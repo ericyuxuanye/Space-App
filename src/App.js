@@ -46,12 +46,12 @@ for (let starName of Object.keys(data)) {
 export default function App() {
   return (
     <div>
-      <MySideNav classname="sidenav"></MySideNav>
+      {/* <MySideNav classname="sidenav"></MySideNav> */}
     <Canvas
       style={{ background: "black", width: "100vw", height: "100vh" }}
       //camera={{ position: [0, Math.cos(Math.PI / 4) * 100, Math.sin(Math.PI/4) * 100], fov: 50 }}  // Set the initial camera position
     >
-      <SystemView star={mockdata.Sun} />
+      <SystemView star={transformedData["24 Sex"]} />
     </Canvas>
     </div>
   );

@@ -37,7 +37,7 @@ def habitable_zone_lim(st_teff, st_lum):
     opt_range[0] = seff[0]
     opt_range[1] = seff[1]
     st_lum = 10 ** st_lum
-    print(st_lum)
+    # print(st_lum)
     # st_lum = np.e ** st_lum
     opt_range = np.sqrt(st_lum / opt_range)
     return np.array(opt_range).tolist()

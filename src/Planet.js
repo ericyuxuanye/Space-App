@@ -24,9 +24,13 @@ export default function Planet({
   radius,
   semiMajorAxis,
   eccentricity,
+  habitability,
+  snr,
   setTargetPosition,
   showOrbit,
   orbitCallback,
+  minSeparationDiam,
+  telescopeDiam,
 }) {
   const [hovered, setHovered] = useState(false);
   const mt = MersenneTwister19937.seed(hashCode(name));
@@ -36,6 +40,7 @@ export default function Planet({
 
   // xProj *= 10;
   // yProj *= 10;
+  console.log(snr, telescopeDiam);
 
   return (
     <>
@@ -79,21 +84,36 @@ export default function Planet({
                     padding: "5px 10px",
                     borderRadius: "5px",
                     whiteSpace: "nowrap",
+                    zIndex: 100,
                   }}
                 >
-                  <div>{`${name} has radius ${radius}x Earth's`}</div>
-                  <div>{`Click to zoom in and learn more`}</div>
+                  <div>{`${name} has estimated habitability ${
+                    Math.round(1000 * habitability) / 1000
+                  }`}</div>
+                  <div>
+                    {snr * Math.pow(telescopeDiam, 2) > 5 &&
+                    telescopeDiam > minSeparationDiam
+                      ? `A ${telescopeDiam}m diameter HWO is powerful enough to observe ${name}!`
+                      : `Unfortunately, a ${telescopeDiam}m HWO isn't powerful enough to observe ${name}.`}
+                  </div>
+                  <div>{`The HWO needs a diameter of at least ${Math.max(
+                    Math.round(10 * Math.pow(5 / snr, 1 / 2)) / 10,
+                    minSeparationDiam
+                  )} m to be able to observe ${name}.`}</div>
+                  <div>{`Click to zoom in and learn more!`}</div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </Html>
       </mesh>
-      {showOrbit && <OrbitTrail
-        theta={theta}
-        semiMajorAxis={semiMajorAxis}
-        eccentricity={eccentricity}
-      />}
+      {showOrbit && (
+        <OrbitTrail
+          theta={theta}
+          semiMajorAxis={semiMajorAxis}
+          eccentricity={eccentricity}
+        />
+      )}
     </>
   );
 }

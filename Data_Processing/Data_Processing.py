@@ -58,6 +58,9 @@ for index, row in df.iterrows():
             "Inclination": row['Inclination'],
             "Habitable-Zone-lower": habitable_val[0],
             "Habitable-Zone-upper": habitable_val[1],
+            "Distance": row["Distance"],
+            'Proper Motion(ra)': row['Proper Motion(ra)'],
+            'Proper Motion(dec)': row['Proper Motion(dec)'],
             "Planets": {}
         }
     
@@ -75,7 +78,7 @@ for index, row in df.iterrows():
             habitable_rows[star_name] = grouped_by_star[star_name]
 
 json_data_habitable = simplejson.dumps(grouped_by_star, ignore_nan=True)
-json_data = open("../src/planetarydata.json","w")
+json_data = open("../src/planetarydata2.json","w")
 json_data.write(json_data_habitable)
 json_data.close
 

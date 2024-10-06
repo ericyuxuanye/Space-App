@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-import { Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import {
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   Bloom,
@@ -12,7 +16,6 @@ import { lerp } from "three/src/math/MathUtils.js";
 import Planet from "./Planet";
 import Star from "./Star";
 import { AU_TO_SOLAR_RADIUS } from "./util";
-
 
 // name,
 // radius,
@@ -29,7 +32,7 @@ function getMaxSemiMajorAxis(planets) {
   return max;
 }
 
-export default function SystemView({ star }) {
+export default function SystemView({ star, telescopeDiam }) {
   const { invalidate, gl } = useThree();
   const maxSemiMajorAxis = getMaxSemiMajorAxis(star.planets);
 
@@ -90,6 +93,7 @@ export default function SystemView({ star }) {
           setTargetPosition={updateTargetPlanet}
           showOrbit={orbit}
           orbitCallback={setOrbit}
+          telescopeDiam={telescopeDiam}
           {...planet}
           // radius={planet.radius}
           // semimajorAxis={planet.semimajorAxis}
@@ -98,8 +102,19 @@ export default function SystemView({ star }) {
       ))}
       {/* Habitable zone */}
       <mesh rotation-x={Math.PI / 2}>
-        <ringGeometry args={[star["Habitable-Zone-upper"] * AU_TO_SOLAR_RADIUS, star["Habitable-Zone-lower"] * AU_TO_SOLAR_RADIUS, 128]} />
-        <meshBasicMaterial color="#86fead" side={THREE.DoubleSide} transparent opacity={0.1} />
+        <ringGeometry
+          args={[
+            star["Habitable-Zone-upper"] * AU_TO_SOLAR_RADIUS,
+            star["Habitable-Zone-lower"] * AU_TO_SOLAR_RADIUS,
+            128,
+          ]}
+        />
+        <meshBasicMaterial
+          color="#86fead"
+          side={THREE.DoubleSide}
+          transparent
+          opacity={0.1}
+        />
       </mesh>
       <EffectComposer disableNormalPass>
         <Bloom

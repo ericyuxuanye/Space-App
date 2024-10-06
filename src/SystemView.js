@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
+import { Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import {
   Bloom,
   EffectComposer,
   ToneMapping,
 } from "@react-three/postprocessing";
-import Star from "./Star";
-import Planet from "./Planet";
-import { Environment } from "@react-three/drei";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import * as THREE from "three";
 import { lerp } from "three/src/math/MathUtils.js";
-import { useFrame, useThree } from "@react-three/fiber";
+import Planet from "./Planet";
+import Star from "./Star";
+import { AU_TO_SOLAR_RADIUS } from "./util";
+
 
 // name,
 // radius,
@@ -93,6 +95,11 @@ export default function SystemView({ star }) {
           // eccentricity={planet.eccentricity}
         />
       ))}
+      {/* Habitable zone */}
+      <mesh rotation-x={Math.PI / 2}>
+        <ringGeometry args={[0.95 * AU_TO_SOLAR_RADIUS, 1.37 * AU_TO_SOLAR_RADIUS, 128]} />
+        <meshBasicMaterial color="#86fead" side={THREE.DoubleSide} transparent opacity={0.1} />
+      </mesh>
       <EffectComposer disableNormalPass>
         <Bloom
           mipmapBlur

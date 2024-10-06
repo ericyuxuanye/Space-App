@@ -1,5 +1,6 @@
 import { Html } from "@react-three/drei";
 import React from "react";
+import { EARTH_RADIUS_TO_SOLAR_RADIUS } from "./util";
 
 function starColor(starClass) {
   switch (starClass) {

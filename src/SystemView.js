@@ -55,9 +55,12 @@ export default function SystemView({ star }) {
     invalidate();
   };
   useFrame(() => {
-    const newX = lerp(position[0], futurePosition[0], 0.2); // Adjust 0.05 for speed
-    const newY = lerp(position[1], futurePosition[1], 0.2);
-    const newZ = lerp(position[2], futurePosition[2], 0.2);
+    const lerpSpeed =
+      target[0] == 0 && target[1] == 0 && target[2] == 0 ? 0.2 : 0.35;
+
+    const newX = lerp(position[0], futurePosition[0], lerpSpeed);
+    const newY = lerp(position[1], futurePosition[1], lerpSpeed);
+    const newZ = lerp(position[2], futurePosition[2], lerpSpeed);
 
     if (
       Math.pow(futurePosition[0] - position[0], 2) +

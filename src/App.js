@@ -63,7 +63,7 @@ export default function App() {
     setTarget(t);
     console.log("target", t);
   };
-  console.log(transformedData["18 Del"]);
+  console.log(transformedData["HD 181433"]);
   
 
   return (
@@ -80,7 +80,7 @@ export default function App() {
           fov: 50,
         }} // Set the initial camera position
       >
-        <SystemView star={transformedData["18 Del"]} setTargetPosition={updateTarget} />
+        <SystemView star={transformedData["HD 181433"]} setTargetPosition={updateTarget} />
 
         <OrbitControls enablePan={false} target={target} />
       </Canvas>

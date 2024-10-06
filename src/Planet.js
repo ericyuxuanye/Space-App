@@ -78,7 +78,7 @@ export default function Planet({
                   }}
                 >
                   <div>{`${name} has radius ${radius}x Earth's`}</div>
-                  <div>{`Click to learn more`}</div>
+                  <div>{`Click to zoom in and learn more`}</div>
                 </motion.div>
               )}
             </AnimatePresence>

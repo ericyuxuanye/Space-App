@@ -170,7 +170,7 @@ export default function EarthOrbitView({
         ref={ref}
         args={[null, null, Object.keys(stars).length]}
         onPointerEnter={onHover}
-        onClick={() => setSystemName(starName)}
+        onClick={() => starName && setSystemName(starName)}
         // onPointerLeave={() => setStarName(null)}
       >
         <sphereGeometry args={[2, 32, 32]} />

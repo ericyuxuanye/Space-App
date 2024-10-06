@@ -77,15 +77,17 @@ export default function SystemList({
         top: "0",
         left: "0",
         zIndex: "30",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <div style={{ marginLeft: "0.5em", marginRight: "0.5em" }}>
+      <h2 style={{ textAlign: "center", color: "#50e67d" }}>Top Habitable Systems</h2>
+      <div style={{ marginLeft: "auto", marginRight: "auto", marginBottom: "20px" }}>
         <DiameterScrollbar
           telescopeDiam={telescopeDiam}
           setTelescopeDiam={setTelescopeDiam}
         />
       </div>
-      <h2 style={{ textAlign: "center" }}>Top Habitable Systems</h2>
       {systemList.slice(0, 100).map(([score, name, color], idx) => {
         return (
           <div

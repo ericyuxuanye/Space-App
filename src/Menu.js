@@ -1,6 +1,6 @@
 import SideNav, {Toggle, NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav'
-//import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-import "./sidenav.css";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+// import "./sidenav.css";
 
 function MySideNav() {
     return <SideNav

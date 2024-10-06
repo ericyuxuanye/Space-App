@@ -19,7 +19,7 @@ export default function SystemView({ star, setTargetPosition }) {
   return (
     <>
       <Environment background files="StudioHDR_2_StarField_01_4K.hdr" />
-      <Star {...star} />
+      <Star setTargetPosition={setTargetPosition} {...star} />
       <ambientLight intensity={0.05} />
       {star.planets.map((planet, i) => (
         <Planet

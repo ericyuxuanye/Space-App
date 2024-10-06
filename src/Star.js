@@ -22,7 +22,7 @@ function starColor(starClass) {
   }
 }
 
-export default function Star({ name, radius, starClass, habitableZone }) {
+export default function Star({ name, radius, starClass, habitableZone, setTargetPosition }) {
   return (
     <mesh>
       <sphereGeometry args={[radius, 32, 32]} />
@@ -42,6 +42,7 @@ export default function Star({ name, radius, starClass, habitableZone }) {
             background: "#00000030",
             borderRadius: "0.5em",
           }}
+          onClick={() => setTargetPosition([0, 0, 0])}
         >
           {name}
         </div>

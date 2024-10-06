@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, Suspense} from "react";
+import React, {useRef, useEffect, Suspense, useLayoutEffect, useMemo} from "react";
 import SimpleStar from "./SimpleStar";
 import {
   Bloom,
@@ -7,7 +7,10 @@ import {
 } from "@react-three/postprocessing";
 import { OrbitControls, PerspectiveCamera, PointerLockControls } from "@react-three/drei";
 import { useFrame, useThree } from '@react-three/fiber';
+import { SphereGeometry } from "three";
 import * as THREE from 'three';
+import { convertRADecToXYZ } from "./SimpleStar";
+import { starColor } from "./util";
 
 function hasObservablePlanet(star, isPlanetObservableFunc) {
   for (const planetData of Object.values(star.planets)) {
@@ -19,7 +22,7 @@ function hasObservablePlanet(star, isPlanetObservableFunc) {
 }
 
 const CameraControls = () => {
-  const controlsRef = useRef();
+  // const controlsRef = useRef();
   // const cameraRef = useRef();
   
   // // Custom camera update function
@@ -42,24 +45,49 @@ const CameraControls = () => {
   return (
     <>
       <perspectiveCamera makeDefault fov={60} position={[0, 0, 0]} />
-      <OrbitControls ref={controlsRef} target={[0, 0, 0]} minDistance={0.01} maxDistance={0.01} enablePan={false} />
+      <OrbitControls target={[0, 0, 0]} minDistance={0.01} maxDistance={0.01} enablePan={false} />
     </>
   );
 };
 
 export default function EarthOrbitView({ stars, isPlanetObservableFunc }) {
+  const ref = useRef();
+  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  // const ref = useLayoutEffect((imesh) => {
+  //   imesh.setMatrixAt(0, new THREE.Matrix4().makeTranslation(0, 0, 0));
+  // });
+  const geometry = new SphereGeometry(0.5, 32, 32);
   const goodStars = Object.values(stars).filter((star) => {
-    console.log(star);
     return hasObservablePlanet(star, isPlanetObservableFunc);
   });
-
+  const intanceMatrix = useMemo(() => new THREE.Matrix4(), []);
+  useEffect(() => {
+    for (let i = 0; i < goodStars.length; i++) {
+      const star = goodStars[i];
+      const dummy = new THREE.Object3D();
+      dummy.position.set(...convertRADecToXYZ(star["Proper Motion(ra)"], star["Proper Motion(dec)"], 1000));
+      dummy.updateMatrix();
+      ref.current.setMatrixAt(i, dummy.matrix);
+      ref.current.setColorAt(i, new THREE.Color(starColor(star.starClass)));
+    }
+    ref.current.instanceMatrix.needsUpdate = true;
+    ref.current.instanceColor.needsUpdate = true;
+  }, [goodStars]);
+  // const starLocs = goodStars.map((star) => {
+  //   return convertRADecToXYZ(star["Proper Motion(ra)"], star["Proper Motion(dec)"], 1000);
+  // });
+  // console.log(starLocs);
   return (
     <>
-      <ambientLight intensity={0.05} />
-      {Object.keys(goodStars).map((starName, idx) => {
+      <ambientLight intensity={100} />
+      {/* {Object.keys(goodStars).map((starName, idx) => {
         const starData = goodStars[starName];
-        return <SimpleStar key={idx} name={starName} {...starData} />;
-      })}
+        return <SimpleStar key={starName} name={starData.name} ra={starData["Proper Motion(ra)"]} dec={starData["Proper Motion(dec)"]} distSun={1000}/>;
+      })} */}
+      <instancedMesh ref={ref} args={[null, null, goodStars.length]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial />
+      </instancedMesh>
       {/* <CameraControls /> */}
       <EffectComposer disableNormalPass>
         <Bloom

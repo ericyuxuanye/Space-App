@@ -44,10 +44,13 @@ export default function SystemList({
         height: "30vh",
         background: "#1a1a1a",
         color: "#6D87A8",
-        zIndex: "10",
         width: "30vw",
         overflowY: "auto",
         border: "1px solid black",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        zIndex: "30",
       }}
     >
       {systemList.slice(0, 100).map(([score, name, color], idx) => {

@@ -121,9 +121,11 @@ export default function App() {
   const [systemName, setSystemName] = useState("");
   const [telescopeDiam, setTelescopeDiam] = useState(6);
 
+  const goBack = () => setSystemName("");
   return (
     <div>
       {systemName === "" ? (
+        <>
         <SystemList
           stars={transformedData}
           getSystemScore={getStarHabitabilityScore}
@@ -131,6 +133,10 @@ export default function App() {
           setSystemName={setSystemName}
           telescopeDiam={telescopeDiam}
         />
+        <Canvas style={{background: "black", width: "100vw", height: "100vh", zIndex: 0, top: 0, left: 0}}>
+          <EarthOrbitView stars={transformedData} isPlanetObservableFunc={() => true}/>
+        </Canvas>
+        </>
       ) : (
         <>
           <Canvas
@@ -178,6 +184,7 @@ export default function App() {
           </div>
         </>
       )}
+        
     </div>
   );
 }

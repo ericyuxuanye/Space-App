@@ -101,22 +101,25 @@ export default function SystemView({ star, telescopeDiam }) {
           // eccentricity={planet.eccentricity}
         />
       ))}
-      {/* Habitable zone */}
-      <mesh rotation-x={Math.PI / 2}>
-        <ringGeometry
-          args={[
-            star["Habitable-Zone-upper"] * AU_TO_SOLAR_RADIUS,
-            star["Habitable-Zone-lower"] * AU_TO_SOLAR_RADIUS,
-            128,
-          ]}
-        />
-        <meshBasicMaterial
-          color="#86fead"
-          side={THREE.DoubleSide}
-          transparent
-          opacity={0.1}
-        />
-      </mesh>
+      {
+      /* Habitable zone */
+      orbit && <mesh rotation-x={Math.PI / 2}>
+      <ringGeometry
+        args={[
+          star["Habitable-Zone-upper"] * AU_TO_SOLAR_RADIUS,
+          star["Habitable-Zone-lower"] * AU_TO_SOLAR_RADIUS,
+          128,
+        ]}
+      />
+      <meshBasicMaterial
+        color="#86fead"
+        side={THREE.DoubleSide}
+        transparent
+        opacity={0.1}
+      />
+    </mesh>
+      }
+      
       <EffectComposer disableNormalPass>
         <Bloom
           mipmapBlur

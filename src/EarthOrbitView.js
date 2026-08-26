@@ -33,6 +33,23 @@ function hasObservablePlanet(star, isPlanetObservableFunc) {
 }
 
 const CameraControls = () => {
+  const { camera, gl } = useThree();
+
+  // The camera sits at its own orbit target looking outward, so OrbitControls'
+  // dolly zoom cannot move toward a star. Zoom by narrowing the field of view
+  // instead (scroll up = zoom in), like a telescope magnification control.
+  useEffect(() => {
+    const el = gl.domElement;
+    const onWheel = (event) => {
+      event.preventDefault();
+      const step = event.deltaY > 0 ? 3 : -3;
+      camera.fov = THREE.MathUtils.clamp(camera.fov + step, 5, 60);
+      camera.updateProjectionMatrix();
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [camera, gl]);
+
   return (
     <>
       <perspectiveCamera makeDefault fov={60} position={[0, 0, 0]} />
@@ -41,6 +58,10 @@ const CameraControls = () => {
         minDistance={0.01}
         maxDistance={0.01}
         enablePan={false}
+        enableZoom={false}
+        // Camera looks outward from inside the star sphere; invert drag so it
+        // behaves like a natural look-around control instead of an orbit.
+        rotateSpeed={-0.5}
       />
     </>
   );
